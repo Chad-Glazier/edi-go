@@ -21,28 +21,28 @@ func (bb *BitBoard) Flag(pos Position) {
 	if pos < 64 {
 		bb.lo |= 1 << pos
 	} else {
-		bb.hi |= 1 << pos-64
+		bb.hi |= 1 << (pos - 64)
 	}
 }
 
 func (bb *BitBoard) Unflag(pos Position) {
 	if pos < 64 {
-		bb.lo = bb.lo &^ 1<<pos
+		bb.lo = bb.lo &^ (1 << pos)
 	} else {
-		bb.hi = bb.lo &^ 1<<(pos-64)
+		bb.hi = bb.hi &^ (1 << (pos - 64))
 	}
 }
 
 func (bb *BitBoard) Flagged(pos Position) bool {
 	if pos < 64 {
-		return bb.lo & 1<<pos != 0
+		return bb.lo & (1 << pos) != 0
 	} else {
-		return bb.hi & 1<<(pos-64) != 0
+		return bb.hi & (1 << (pos - 64)) != 0
 	}
 }
 
 func (bb *BitBoard) Empty() bool {
-	return bb.lo==0 && bb.hi==0
+	return bb.lo == 0 && bb.hi == 0
 }
 
 // Returns the "lowest" position on the board, meaning that which is the
@@ -51,7 +51,7 @@ func (bb *BitBoard) Empty() bool {
 func (bb *BitBoard) Next() Position {
 	switch {
 	case bb.hi != 0:
-		pos := Position(bits.TrailingZeros64(bb.hi))
+		pos := Position(bits.TrailingZeros64(bb.hi) + 64)
 		bb.hi &= bb.hi - 1
 		return pos	
 	case bb.lo != 0:
@@ -71,28 +71,19 @@ func (bb *BitBoard) Count() int {
 // Returns an iterator that can be used to get each flagged positions on the
 // board.
 func (bb *BitBoard) Positions() iter.Seq[Position] {
-
-	lo := bb.lo
-	hi := bb.hi
-
 	return func (yield func(Position) bool) {
-
-		for lo != 0 {
+		for hi := bb.hi; hi != 0; hi &= hi - 1 {
+			pos := Position(bits.TrailingZeros64(hi) + 64)
+			if !yield(pos) {
+				return
+			}
+		}
+		for lo := bb.lo; lo != 0; lo &= lo - 1 {
 			pos := Position(bits.TrailingZeros64(lo))
 			if !yield(pos) {
 				return
 			}
-			lo &= lo - 1
 		}
-
-		for hi != 0 {
-			pos := Position(bits.TrailingZeros64(hi))
-			if !yield(pos) {
-				return
-			}
-			hi &= hi -1
-		}
-
 	}
 }
 
