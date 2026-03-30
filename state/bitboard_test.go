@@ -1,31 +1,36 @@
 package state
 
 import (
-	"testing"
 	"math/rand"
+	"testing"
 )
 
 // Used to "consume" values to avoid dead code or "unused variable" errors.
 var blackHole any
 
-func TestFlagging(t *testing.T) {
-	bb := BitBoard{}
-
-	flagged := make(map[Position]bool, 100)
-	const FLAG_DENSITY = 0.40
-
-	flagCount := 0
+func randomBoard(density float64) (
+	bb BitBoard, flagged map[Position]bool, flagCount int,
+) {
+	bb = BitBoard{}
+	flagged = make(map[Position]bool, 100)
+	flagCount = 0
 
 	for pos := range Position(100) {
-		if rand.Float64() < FLAG_DENSITY {
+		if rand.Float64() < density {
 			flagged[pos] = true
 			bb.Flag(pos)
 			flagCount++
 		} else {
 			flagged[pos] = false
 		}
-		
 	}
+
+	return
+}
+
+func TestFlagging(t *testing.T) {
+
+	bb, flagged, flagCount := randomBoard(0.40)
 
 	for pos := range Position(100) {
 		if flagged[pos] && !bb.Flagged(pos) {
@@ -46,7 +51,7 @@ func TestFlagging(t *testing.T) {
 
 	if iteratedPositions != flagCount {
 		t.Errorf(
-			"Iterated over %d flags, but expected %d", 
+			"Iterated over %d flags, but expected %d",
 			iteratedPositions, flagCount,
 		)
 	}
@@ -62,7 +67,7 @@ func TestFlagging(t *testing.T) {
 
 	if iteratedPositions != flagCount {
 		t.Errorf(
-			"Iterated over %d flags, but expected %d", 
+			"Iterated over %d flags, but expected %d",
 			iteratedPositions, flagCount,
 		)
 	}
@@ -73,10 +78,10 @@ func TestFlagging(t *testing.T) {
 		if flagged[pos] {
 			flagCount--
 		}
-	
+
 		if bb.Count() != flagCount {
 			t.Errorf(
-				"Expected flag count %d to be %d", 
+				"Expected flag count %d to be %d",
 				bb.Count(), flagCount,
 			)
 		}
@@ -85,18 +90,11 @@ func TestFlagging(t *testing.T) {
 	if !bb.Empty() {
 		t.Errorf("Expected board to be empty")
 	}
-} 
+}
 
 func BenchmarkPositions(b *testing.B) {
-	bb := BitBoard{}
-
-	const FLAG_DENSITY = 0.40
-
-	for pos := range Position(100) {
-		if rand.Float64() < FLAG_DENSITY {
-			bb.Flag(pos)
-		}
-	}
+	
+	bb, _, _ := randomBoard(0.20)
 
 	for b.Loop() {
 		for pos := range bb.Positions() {
@@ -106,15 +104,8 @@ func BenchmarkPositions(b *testing.B) {
 }
 
 func BenchmarkNext(b *testing.B) {
-	bb := BitBoard{}
-
-	const FLAG_DENSITY = 0.40
-
-	for pos := range Position(100) {
-		if rand.Float64() < FLAG_DENSITY {
-			bb.Flag(pos)
-		}
-	}
+	
+	bb, _, _ := randomBoard(0.20)
 
 	for b.Loop() {
 		iter := bb.Copy()
@@ -123,4 +114,3 @@ func BenchmarkNext(b *testing.B) {
 		}
 	}
 }
-

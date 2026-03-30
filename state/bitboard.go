@@ -5,7 +5,10 @@ import (
 	"math/bits"
 )
 
-type BitBoard struct{
+// #include "bitboard.h"
+import "C"
+
+type BitBoard struct {
 	hi uint64
 	lo uint64
 }
@@ -46,18 +49,18 @@ func (bb *BitBoard) Empty() bool {
 }
 
 // Returns the "lowest" position on the board, meaning that which is the
-// closest to the bottom-right corner, and unflags it. If the bitboard is 
+// closest to the bottom-right corner, and unflags it. If the bitboard is
 // empty, then NULL_POS is returned.
 func (bb *BitBoard) Next() Position {
 	switch {
 	case bb.hi != 0:
 		pos := Position(bits.TrailingZeros64(bb.hi) + 64)
 		bb.hi &= bb.hi - 1
-		return pos	
+		return pos
 	case bb.lo != 0:
 		pos := Position(bits.TrailingZeros64(bb.lo))
 		bb.lo &= bb.lo - 1
-		return pos			
+		return pos
 	default:
 		return NULL_POS
 	}
@@ -71,7 +74,7 @@ func (bb *BitBoard) Count() int {
 // Returns an iterator that can be used to get each flagged positions on the
 // board.
 func (bb *BitBoard) Positions() iter.Seq[Position] {
-	return func (yield func(Position) bool) {
+	return func(yield func(Position) bool) {
 		for hi := bb.hi; hi != 0; hi &= hi - 1 {
 			pos := Position(bits.TrailingZeros64(hi) + 64)
 			if !yield(pos) {
@@ -86,4 +89,3 @@ func (bb *BitBoard) Positions() iter.Seq[Position] {
 		}
 	}
 }
-

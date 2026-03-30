@@ -1,7 +1,7 @@
 package state
 
 // Represents a position on the 10x10 Amazons board with an index from 0 to 99.
-// We use row-major ordering, so you can get the row index with position / 10 
+// We use row-major ordering, so you can get the row index with position / 10
 // and the column with position % 10.
 type Position uint8
 
