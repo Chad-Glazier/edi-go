@@ -5,9 +5,6 @@ import (
 	"math/bits"
 )
 
-// #include "bitboard.h"
-import "C"
-
 type BitBoard struct {
 	hi uint64
 	lo uint64
