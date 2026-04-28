@@ -12,5 +12,3 @@ type Board struct {
 	// The player who can make a move from this position.
 	active PlayerColor
 }
-
-func (*Board) moves()

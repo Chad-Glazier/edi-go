@@ -1,9 +1,6 @@
 package state
 
-import (
-	"iter"
-	"math/bits"
-)
+import "math/bits"
 
 type BitBoard struct {
 	hi uint64
@@ -66,23 +63,4 @@ func (bb *BitBoard) Next() Position {
 // Returns the number of flagged positions on this board.
 func (bb *BitBoard) Count() int {
 	return bits.OnesCount64(bb.lo) + bits.OnesCount64(bb.hi)
-}
-
-// Returns an iterator that can be used to get each flagged positions on the
-// board.
-func (bb *BitBoard) Positions() iter.Seq[Position] {
-	return func(yield func(Position) bool) {
-		for hi := bb.hi; hi != 0; hi &= hi - 1 {
-			pos := Position(bits.TrailingZeros64(hi) + 64)
-			if !yield(pos) {
-				return
-			}
-		}
-		for lo := bb.lo; lo != 0; lo &= lo - 1 {
-			pos := Position(bits.TrailingZeros64(lo))
-			if !yield(pos) {
-				return
-			}
-		}
-	}
 }

@@ -42,27 +42,12 @@ func TestFlagging(t *testing.T) {
 	}
 
 	iteratedPositions := 0
-	for pos := range bb.Positions() {
-		iteratedPositions++
-		if !flagged[pos] {
-			t.Errorf("Expected iterated position %d to be flagged.", pos)
-		}
-	}
-
-	if iteratedPositions != flagCount {
-		t.Errorf(
-			"Iterated over %d flags, but expected %d",
-			iteratedPositions, flagCount,
-		)
-	}
-
-	iteratedPositions = 0
 	iter := bb.Copy()
 	for pos := iter.Next(); pos != NULL_POS; pos = iter.Next() {
 		iteratedPositions++
 		if !flagged[pos] {
 			t.Errorf("Expected iterated position %d to be flagged.", pos)
-		}
+		}	
 	}
 
 	if iteratedPositions != flagCount {
@@ -89,17 +74,6 @@ func TestFlagging(t *testing.T) {
 
 	if !bb.Empty() {
 		t.Errorf("Expected board to be empty")
-	}
-}
-
-func BenchmarkPositions(b *testing.B) {
-	
-	bb, _, _ := randomBoard(0.20)
-
-	for b.Loop() {
-		for pos := range bb.Positions() {
-			blackHole = pos
-		}
 	}
 }
 
