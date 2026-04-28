@@ -72,3 +72,29 @@ func (bb *BitBoard) Next() Position {
 func (bb *BitBoard) Count() int {
 	return bits.OnesCount64(bb.lo) + bits.OnesCount64(bb.hi)
 }
+
+// Returns the greatest . If the
+// board is empty, then the null position (NULL_POS) is returned.
+func (bb *BitBoard) Lsb() Position {
+	switch {
+	case bb.lo != 0:
+		return Position(bits.TrailingZeros64(bb.lo))
+	case bb.hi != 0:
+		return Position(64 + bits.TrailingZeros64(bb.hi))
+	default:
+		return NULL_POS
+	}
+}
+
+// Returns the position index of the most-significant bit in the board. If the
+// board is empty, then the null position (NULL_POS) is returned .
+func (bb *BitBoard) Msb() Position {
+	switch {
+	case bb.hi != 0:
+		return Position(127 - bits.LeadingZeros64(bb.hi))
+	case bb.lo != 0:
+		return Position(63 - bits.LeadingZeros64(bb.lo))
+	default:
+		return NULL_POS
+	}
+}

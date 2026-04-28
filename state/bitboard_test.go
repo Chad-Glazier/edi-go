@@ -78,13 +78,61 @@ func TestFlagging(t *testing.T) {
 }
 
 func BenchmarkNext(b *testing.B) {
-
 	bb, _, _ := randomBoard(0.20)
-
 	for b.Loop() {
 		iter := bb.Copy()
 		for pos := iter.Next(); pos != NULL_POS; pos = iter.Next() {
 			blackHole = pos
+		}
+	}
+}
+
+func TestMsbLsb(t *testing.T) {
+
+	empty := BitBoard{}
+	if empty.Msb() != NULL_POS {
+		t.Errorf(
+			"Expected MSB of empty board to be NULL_POS, got %d", empty.Msb(),
+		)
+	}
+	if empty.Lsb() != NULL_POS {
+		t.Errorf(
+			"Expected LSB of empty board to be NULL_POS, got %d", empty.Lsb(),
+		)
+	}
+
+	bb, flagged, _ := randomBoard(0.40)
+
+	minPos := Position(99)
+	maxPos := Position(0)
+
+	for pos := range Position(100) {
+		if flagged[pos] {
+			if pos < minPos {
+				minPos = pos
+			}
+			if pos > maxPos {
+				maxPos = pos
+			}
+		}
+	}
+
+	if bb.Lsb() != minPos {
+		t.Errorf("Expected LSB %d, got %d", minPos, bb.Lsb())
+	}
+	if bb.Msb() != maxPos {
+		t.Errorf("Expected MSB %d, got %d", maxPos, bb.Msb())
+	}
+
+	for pos := range Position(100) {
+		single := BitBoard{}
+		single.Flag(pos)
+
+		if single.Lsb() != pos {
+			t.Errorf("Single-bit LSB failed at %d, got %d", pos, single.Lsb())
+		}
+		if single.Msb() != pos {
+			t.Errorf("Single-bit MSB failed at %d, got %d", pos, single.Msb())
 		}
 	}
 }
