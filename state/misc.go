@@ -39,7 +39,7 @@ func Pos(row, col int) Position {
 }
 
 // Converts a position index into row and column coordinates
-func Coords(pos Position) (row int, col int) {
+func Coords(pos Position) (row, col int) {
 	row = int(pos) / 10
 	col = int(pos) % 10
 	return

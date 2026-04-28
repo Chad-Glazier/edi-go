@@ -27,6 +27,6 @@ func PrintBitBoard(bb *state.BitBoard) {
 
 		fmt.Print("\n")
 	}
-	
+
 	fmt.Println()
 }

@@ -5,7 +5,7 @@ package state
 // from p to q (accounting for squares that are already occupied by arrows or
 // queens).
 func KNeighbors(occupancy *BitBoard, position Position) BitBoard {
-	adjacentSquares := KAdj[position]
+	adjacentSquares := kAdj[position]
 	return BitBoard{
 		lo: adjacentSquares.lo &^ occupancy.lo,
 		hi: adjacentSquares.hi &^ occupancy.hi,
@@ -50,7 +50,7 @@ func QNeighbors(occupancy *BitBoard, position Position) BitBoard {
 	// Iterate over the forward directions.
 	for dir := W; dir < E; dir++ {
 
-		ray := RayExc[position][dir]
+		ray := rayExc[position][dir]
 		blockers := BitBoard{
 			lo: ray.lo & occ.lo,
 			hi: ray.hi & occ.hi,
@@ -63,7 +63,7 @@ func QNeighbors(occupancy *BitBoard, position Position) BitBoard {
 			continue
 		}
 
-		blockedSegment := RayInc[nearestBlocker][dir]
+		blockedSegment := rayInc[nearestBlocker][dir]
 		neighbors.lo |= ray.lo ^ blockedSegment.lo
 		neighbors.hi |= ray.hi ^ blockedSegment.hi
 
@@ -72,7 +72,7 @@ func QNeighbors(occupancy *BitBoard, position Position) BitBoard {
 	// Iterate over the backward directions.
 	for dir := E; dir <= SW; dir++ {
 
-		ray := RayExc[position][dir]
+		ray := rayExc[position][dir]
 		blockers := BitBoard{
 			lo: ray.lo & occ.lo,
 			hi: ray.hi & occ.hi,
@@ -85,7 +85,7 @@ func QNeighbors(occupancy *BitBoard, position Position) BitBoard {
 			continue
 		}
 
-		blockedSegment := RayInc[nearestBlocker][dir]
+		blockedSegment := rayInc[nearestBlocker][dir]
 		neighbors.lo |= ray.lo ^ blockedSegment.lo
 		neighbors.hi |= ray.hi ^ blockedSegment.hi
 

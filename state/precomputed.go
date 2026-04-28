@@ -1,31 +1,31 @@
 package state
 
-// For each position index p, KAdj[p] stores a precomputed bitboard that has
+// For each position index p, kAdj[p] stores a precomputed bitboard that has
 // each square q flagged if and only if a chess king on p could get to q in a
 // single move.
-var KAdj = [100]BitBoard{}
+var kAdj = [100]BitBoard{}
 
-// For each position index p and each direction d, RayExc[p][d] stores a
+// For each position index p and each direction d, rayExc[p][d] stores a
 // precomputed bitboard such that each position is flagged if and only if it
 // lies on a ray projected from p in the direction of d. This ray will exclude
-// p (see RayInc for one that includes it).
-var RayExc = [100][8]BitBoard{}
+// p (see rayInc for one that includes it).
+var rayExc = [100][8]BitBoard{}
 
-// For each position index p and each direction d, RayInc[p][d] stores a
+// For each position index p and each direction d, rayInc[p][d] stores a
 // precomputed bitboard such that each position is flagged if and only if it
 // lies on a ray projected from p in the direction of d. This ray will include
-// p (see RayExc for one that excludes it).
-var RayInc = [100][8]BitBoard{}
+// p (see rayExc for one that excludes it).
+var rayInc = [100][8]BitBoard{}
 
 func init() {
 
 	// Precompute the bitboards.
 	for row := range 10 {
 		for col := range 10 {
-			KAdj[row*10+col] = kAdjacent(row, col)
+			kAdj[row*10+col] = kAdjacent(row, col)
 			for dir := range NUMBER_OF_DIRECTIONS {
-				RayExc[row*10+col][dir] = exclusiveRay(row, col, dir)
-				RayInc[row*10+col][dir] = inclusiveRay(row, col, dir)
+				rayExc[row*10+col][dir] = exclusiveRay(row, col, dir)
+				rayInc[row*10+col][dir] = inclusiveRay(row, col, dir)
 			}
 		}
 	}
