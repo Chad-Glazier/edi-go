@@ -10,7 +10,8 @@ type Position uint8
 const NULL_POS Position = 100
 
 // Represents a player color.
+type PlayerColor bool
 const (
-	WHITE = 0
-	BLACK = 1
+	WHITE PlayerColor = true
+	BLACK PlayerColor = false
 )
