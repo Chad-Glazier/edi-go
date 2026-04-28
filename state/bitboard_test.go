@@ -47,7 +47,7 @@ func TestFlagging(t *testing.T) {
 		iteratedPositions++
 		if !flagged[pos] {
 			t.Errorf("Expected iterated position %d to be flagged.", pos)
-		}	
+		}
 	}
 
 	if iteratedPositions != flagCount {
@@ -78,7 +78,7 @@ func TestFlagging(t *testing.T) {
 }
 
 func BenchmarkNext(b *testing.B) {
-	
+
 	bb, _, _ := randomBoard(0.20)
 
 	for b.Loop() {

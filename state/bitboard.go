@@ -2,11 +2,15 @@ package state
 
 import "math/bits"
 
+// Represents a board where each position index (0-99, since Amazons is played
+// on a 10x10 board) is either 0 or 1, which we refer to as "unflagged" and
+// "flagged," respectively.
 type BitBoard struct {
 	hi uint64
 	lo uint64
 }
 
+// Returns a copy of the bitboard.
 func (bb *BitBoard) Copy() BitBoard {
 	return BitBoard{
 		lo: bb.lo,
@@ -14,6 +18,7 @@ func (bb *BitBoard) Copy() BitBoard {
 	}
 }
 
+// Flags a bit in the bitboard.
 func (bb *BitBoard) Flag(pos Position) {
 	if pos < 64 {
 		bb.lo |= 1 << pos
@@ -22,6 +27,7 @@ func (bb *BitBoard) Flag(pos Position) {
 	}
 }
 
+// Unflags a bit in the bitboard.
 func (bb *BitBoard) Unflag(pos Position) {
 	if pos < 64 {
 		bb.lo = bb.lo &^ (1 << pos)
@@ -30,14 +36,16 @@ func (bb *BitBoard) Unflag(pos Position) {
 	}
 }
 
+// Returns true if the bit in the board is flagged and false otherwise.
 func (bb *BitBoard) Flagged(pos Position) bool {
 	if pos < 64 {
-		return bb.lo & (1 << pos) != 0
+		return bb.lo&(1<<pos) != 0
 	} else {
-		return bb.hi & (1 << (pos - 64)) != 0
+		return bb.hi&(1<<(pos-64)) != 0
 	}
 }
 
+// Returns true if and only if the bitboard has no flags.
 func (bb *BitBoard) Empty() bool {
 	return bb.lo == 0 && bb.hi == 0
 }
