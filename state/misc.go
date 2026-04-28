@@ -21,8 +21,8 @@ const (
 
 // The last direction; i.e., the one with the greatest underlying numeric
 // value. If you want to iterate over all directions, you can iterate over
-// range LAST_DIRECTION.
-const LAST_DIRECTION = SW
+// range NUMBER_OF_DIRECTIONS.
+const NUMBER_OF_DIRECTIONS = 8
 
 // Represents a position on the 10x10 Amazons board with an index from 0 to 99.
 // We use row-major ordering, so you can get the row index with position / 10

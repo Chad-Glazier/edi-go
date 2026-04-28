@@ -1,10 +1,17 @@
 package main
 
 import (
-	"fmt"
-	// "github.com/edi/state"
+	"github.com/edi/cli"
+	"github.com/edi/state"
 )
 
 func main() {
-	fmt.Println("hello, wasm")
+	bb := state.BitBoard{}
+
+	bb.Flag(state.Pos(1, 2))
+
+	kNeighbors := state.QNeighbors(&bb, state.Pos(1, 2))
+
+	cli.PrintBitBoard(&bb)
+	cli.PrintBitBoard(&kNeighbors)
 }
