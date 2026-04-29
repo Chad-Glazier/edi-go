@@ -2,10 +2,13 @@ package main
 
 import (
 	"github.com/edi/cli"
-	"github.com/edi/state"
+	"github.com/edi/eval"
+	"github.com/edi/search/alpha_beta"
 )
 
 func main() {
-	board := state.InitialState()
-	cli.PrintState(&board)
+	cli.RunGame(
+		alpha_beta.HistoricAlphaBeta(eval.KMinDist),
+		alpha_beta.HistoricAlphaBeta(eval.KMinDist),
+	)
 }

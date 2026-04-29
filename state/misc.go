@@ -44,3 +44,13 @@ func Coords(pos Position) (row, col int) {
 	col = int(pos) % 10
 	return
 }
+
+// Represents a move.
+type Move struct {
+	// The original position of the queen being moved.
+	From Position
+	// The new position of the queen being moved.
+	To Position
+	// The position where the queen fired her arrow.
+	Arrow Position
+}

@@ -18,20 +18,20 @@ func PrintState(board *state.Board) {
 	for row := range 10 {
 		fmt.Printf("\t%d "+LINE_VERTICAL, row)
 		for col := range 10 {
-			s := fgBrightBlack(".")
+			s := fgBrightBlack("\u00B7")
 			switch {
 			case board.White.Flagged(state.Pos(row, col)):
-				s = fgBrightCyan("■")
+				s = fgBrightCyan("\u25A0")
 				if board.WhiteIsActive() {
 					s = blink(s)
 				}
 			case board.Black.Flagged(state.Pos(row, col)):
-				s = fgBrightRed("■")
+				s = fgBrightRed("\u25A0")
 				if board.BlackIsActive() {
 					s = blink(s)
 				}
 			case board.Occupancy.Flagged(state.Pos(row, col)):
-				s = fgWhite("X")
+				s = fgWhite("\u2715")
 			}
 			fmt.Print(" " + s)
 		}

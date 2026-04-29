@@ -12,10 +12,10 @@ func (board *Board) Successors() []Board {
 	successors := make([]Board, 0, 2176)
 
 	if board.WhiteIsActive() {
-		i1 := board.White.Copy()
+		i1 := board.White
 		for from := i1.Next(); from != NULL_POS; from = i1.Next() {
 
-			i2 := QNeighbors(&board.Occupancy, from)
+			i2 := QNeighbors(board.Occupancy, from)
 			for to := i2.Next(); to != NULL_POS; to = i2.Next() {
 
 				board.White.Unflag(from)
@@ -24,7 +24,7 @@ func (board *Board) Successors() []Board {
 				board.Occupancy.Unflag(from)
 				board.Occupancy.Flag(to)
 
-				i3 := QNeighbors(&board.Occupancy, to)
+				i3 := QNeighbors(board.Occupancy, to)
 				for arrow := i3.Next(); arrow != NULL_POS; arrow = i3.Next() {
 
 					board.Occupancy.Flag(arrow)
@@ -34,9 +34,9 @@ func (board *Board) Successors() []Board {
 						White:     board.White,
 						Black:     board.Black,
 						Move: Move{
-							from:  from,
-							to:    to,
-							arrow: arrow,
+							From:  from,
+							To:    to,
+							Arrow: arrow,
 						},
 					})
 
@@ -51,10 +51,10 @@ func (board *Board) Successors() []Board {
 			}
 		}
 	} else {
-		i1 := board.Black.Copy()
+		i1 := board.Black
 		for from := i1.Next(); from != NULL_POS; from = i1.Next() {
 
-			i2 := QNeighbors(&board.Occupancy, from)
+			i2 := QNeighbors(board.Occupancy, from)
 			for to := i2.Next(); to != NULL_POS; to = i2.Next() {
 
 				board.Black.Unflag(from)
@@ -63,7 +63,7 @@ func (board *Board) Successors() []Board {
 				board.Occupancy.Unflag(from)
 				board.Occupancy.Flag(to)
 
-				i3 := QNeighbors(&board.Occupancy, to)
+				i3 := QNeighbors(board.Occupancy, to)
 				for arrow := i3.Next(); arrow != NULL_POS; arrow = i3.Next() {
 
 					board.Occupancy.Flag(arrow)
@@ -73,9 +73,9 @@ func (board *Board) Successors() []Board {
 						White:     board.White,
 						Black:     board.Black,
 						Move: Move{
-							from:  from,
-							to:    to,
-							arrow: arrow,
+							From:  from,
+							To:    to,
+							Arrow: arrow,
 						},
 					})
 

@@ -42,7 +42,7 @@ func TestFlagging(t *testing.T) {
 	}
 
 	iteratedPositions := 0
-	iter := bb.Copy()
+	iter := bb
 	for pos := iter.Next(); pos != NULL_POS; pos = iter.Next() {
 		iteratedPositions++
 		if !flagged[pos] {
@@ -80,7 +80,7 @@ func TestFlagging(t *testing.T) {
 func BenchmarkNext(b *testing.B) {
 	bb, _, _ := randomBoard(0.20)
 	for b.Loop() {
-		iter := bb.Copy()
+		iter := bb
 		for pos := iter.Next(); pos != NULL_POS; pos = iter.Next() {
 			blackHole = pos
 		}
@@ -134,5 +134,16 @@ func TestMsbLsb(t *testing.T) {
 		if single.Msb() != pos {
 			t.Errorf("Single-bit MSB failed at %d, got %d", pos, single.Msb())
 		}
+	}
+}
+
+func BenchmarkBitwiseOperations(b *testing.B) {
+	x, y := BitBoard{}, BitBoard{}
+	for b.Loop() {
+		blackHole = x.Or(y)
+		blackHole = x.Xor(y)
+		blackHole = x.And(y)
+		blackHole = x.AndNot(y)
+		blackHole = x.Not()
 	}
 }

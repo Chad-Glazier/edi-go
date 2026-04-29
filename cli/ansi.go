@@ -1,5 +1,7 @@
 package cli
 
+import "fmt"
+
 const (
 	FG_BLACK   = "\u001B[30m"
 	FG_RED     = "\u001B[31m"
@@ -108,3 +110,5 @@ func blink(s string) string         { return BLINK + s + BLINK_RESET }
 func reverse(s string) string       { return REVERSE + s + REVERSE_RESET }
 func hidden(s string) string        { return HIDDEN + s + HIDDEN_RESET }
 func strikethrough(s string) string { return STRIKETHROUGH + s + STRIKETHROUGH_RESET }
+
+func clearScreen() { fmt.Print(ERASE_SCREEN + RESET_CURSOR) }

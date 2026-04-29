@@ -10,14 +10,6 @@ type BitBoard struct {
 	lo uint64
 }
 
-// Returns a copy of the bitboard.
-func (bb *BitBoard) Copy() BitBoard {
-	return BitBoard{
-		lo: bb.lo,
-		hi: bb.hi,
-	}
-}
-
 // Flags a bit in the bitboard.
 func (bb *BitBoard) Flag(pos Position) {
 	if pos < 64 {
@@ -50,6 +42,11 @@ func (bb *BitBoard) Empty() bool {
 	return bb.lo == 0 && bb.hi == 0
 }
 
+// Returns true if and only if the bitboard has at least one flag.
+func (bb *BitBoard) NotEmpty() bool {
+	return bb.lo != 0 || bb.hi != 0
+}
+
 // Returns the "lowest" position on the board, meaning that which is the
 // closest to the bottom-right corner, and unflags it. If the bitboard is
 // empty, then NULL_POS is returned.
@@ -73,7 +70,7 @@ func (bb *BitBoard) Count() int {
 	return bits.OnesCount64(bb.lo) + bits.OnesCount64(bb.hi)
 }
 
-// Returns the greatest . If the
+// Returns the greatest flagged position index on the board. If the
 // board is empty, then the null position (NULL_POS) is returned.
 func (bb *BitBoard) Lsb() Position {
 	switch {
@@ -97,4 +94,74 @@ func (bb *BitBoard) Msb() Position {
 	default:
 		return NULL_POS
 	}
+}
+
+// Performs a bitwise OR operation (a | b) and returns the result.
+func (a BitBoard) Or(b BitBoard) BitBoard {
+	return BitBoard{
+		lo: a.lo | b.lo,
+		hi: a.hi | b.hi,
+	}
+}
+
+// Performs a bitwise OR operation (a | b) and assigns the result to a.
+func (a *BitBoard) AssignOr(b BitBoard) {
+	a.lo |= b.lo
+	a.hi |= b.hi
+}
+
+// Performs a bitwise XOR operation (a ^ b) and returns the result.
+func (a BitBoard) Xor(b BitBoard) BitBoard {
+	return BitBoard{
+		lo: a.lo ^ b.lo,
+		hi: a.hi ^ b.hi,
+	}
+}
+
+// Performs a bitwise XOR operation (a ^ b) and assigns the result to a.
+func (a *BitBoard) AssignXor(b BitBoard) {
+	a.lo ^= b.lo
+	a.hi ^= b.hi
+}
+
+// Performs a bitwise AND operation (a & b) and returns the result.
+func (a BitBoard) And(b BitBoard) BitBoard {
+	return BitBoard{
+		lo: a.lo & b.lo,
+		hi: a.hi & b.hi,
+	}
+}
+
+// Performs a bitwise AND operation (a & b) and assigns the result to a.
+func (a *BitBoard) AssignAnd(b BitBoard) {
+	a.lo &= b.lo
+	a.hi &= b.hi
+}
+
+// Performs a bitwise AND-NOT operation (a &^ b) and returns the result.
+func (a BitBoard) AndNot(b BitBoard) BitBoard {
+	return BitBoard{
+		lo: a.lo &^ b.lo,
+		hi: a.hi &^ b.hi,
+	}
+}
+
+// Performs a bitwise AND-NOT operation (a &^ b) and assigns the result to a.
+func (a *BitBoard) AssignAndNot(b BitBoard) {
+	a.lo &^= b.lo
+	a.hi &^= b.hi
+}
+
+// Performs a bitwise NOT operation (a ^ b) and returns the result.
+func (a BitBoard) Not() BitBoard {
+	return BitBoard{
+		lo: ^a.lo,
+		hi: ^a.hi,
+	}
+}
+
+// Performs a bitwise NOT operation (a ^ b) and assigns the result to a.
+func (a *BitBoard) AssignNot() {
+	a.lo = ^a.lo
+	a.hi = ^a.hi
 }

@@ -70,7 +70,7 @@ func expectedFrontier(
 
 	result := BitBoard{}
 
-	iter := territory.Copy()
+	iter := territory
 	for pos := iter.Next(); pos != NULL_POS; pos = iter.Next() {
 		neighbors := neighborFn(occ, pos)
 		for n := neighbors.Next(); n != NULL_POS; n = neighbors.Next() {
@@ -92,7 +92,7 @@ func TestKNeighbors(t *testing.T) {
 		occ, _, _ := randomBoard(0.2)
 
 		for pos := range Position(100) {
-			got := KNeighbors(&occ, pos)
+			got := KNeighbors(occ, pos)
 			expected := expectedKNeighbors(occ, pos)
 
 			if got.Count() != expected.Count() {
@@ -113,14 +113,14 @@ func TestQNeighbors(t *testing.T) {
 		occ, _, _ := randomBoard(0.2)
 
 		for pos := range Position(100) {
-			got := QNeighbors(&occ, pos)
+			got := QNeighbors(occ, pos)
 			expected := expectedQNeighbors(occ, pos)
 
 			if got.Count() != expected.Count() {
 				t.Fatalf("QNeighbors size mismatch at %d", pos)
 			}
 
-			iter := expected.Copy()
+			iter := expected
 			for p := iter.Next(); p != NULL_POS; p = iter.Next() {
 				if !got.Flagged(p) {
 					t.Errorf("QNeighbors missing %d from %d", p, pos)
@@ -135,14 +135,14 @@ func TestKFrontier(t *testing.T) {
 		occ, _, _ := randomBoard(0.2)
 		territory, _, _ := randomBoard(0.2)
 
-		got := KFrontier(&occ, &territory)
+		got := KFrontier(occ, territory)
 		expected := expectedFrontier(occ, territory, expectedKNeighbors)
 
 		if got.Count() != expected.Count() {
 			t.Fatalf("KFrontier size mismatch")
 		}
 
-		iter := expected.Copy()
+		iter := expected
 		for p := iter.Next(); p != NULL_POS; p = iter.Next() {
 			if !got.Flagged(p) {
 				t.Errorf("KFrontier missing %d", p)
@@ -156,14 +156,14 @@ func TestQFrontier(t *testing.T) {
 		occ, _, _ := randomBoard(0.2)
 		territory, _, _ := randomBoard(0.2)
 
-		got := QFrontier(&occ, &territory)
+		got := QFrontier(occ, territory)
 		expected := expectedFrontier(occ, territory, expectedQNeighbors)
 
 		if got.Count() != expected.Count() {
 			t.Fatalf("QFrontier size mismatch")
 		}
 
-		iter := expected.Copy()
+		iter := expected
 		for p := iter.Next(); p != NULL_POS; p = iter.Next() {
 			if !got.Flagged(p) {
 				t.Errorf("QFrontier missing %d", p)

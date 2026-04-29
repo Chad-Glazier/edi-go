@@ -14,6 +14,10 @@ const (
 	T_HORIZONTAL_DOWN   = "\u252C" // ┬
 	T_HORIZONTAL_UP     = "\u2534" // ┴
 	CROSS               = "\u253C" // ┼
+	DIAG_UPPER_RIGHT    = "\u2571" // ╱
+	DIAG_LOWER_LEFT     = "\u2571" // ╱
+	DIAG_UPPER_LEFT     = "\u2572" // ╲
+	DIAG_LOWER_RIGHT    = "\u2572" // ╲
 )
 
 func repeat(times int, str string) string {
