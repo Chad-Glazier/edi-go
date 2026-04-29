@@ -2,6 +2,7 @@ package alpha_beta
 
 import (
 	"math"
+	"time"
 
 	"github.com/edi/eval"
 	"github.com/edi/search"
@@ -11,6 +12,7 @@ import (
 type alphaBetaState struct {
 	heuristic eval.EvaluationFunc
 	history   *historyTable
+	timeout   chan bool
 }
 
 // Creates a new search function using the Minimax algorithm with alpha-beta
@@ -26,7 +28,7 @@ func HistoricAlphaBeta(heuristic eval.EvaluationFunc) search.SearchFunc {
 }
 
 func (s *alphaBetaState) search(
-	board *state.Board, milliseconds int,
+	board *state.Board, time time.Duration,
 ) *state.Move {
 
 	var bestMove *state.Move

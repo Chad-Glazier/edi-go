@@ -2,12 +2,13 @@ package cli
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/edi/search"
 	"github.com/edi/state"
 )
 
-func RunGame(white, black search.SearchFunc) {
+func RunGame(white, black search.SearchFunc, turnTimer time.Duration) {
 	board := state.InitialState()
 	clearScreen()
 	PrintState(&board)
@@ -17,9 +18,9 @@ func RunGame(white, black search.SearchFunc) {
 	for len(board.Successors()) != 0 {
 		var move *state.Move
 		if player == state.WHITE {
-			move = white(&board, 30000)
+			move = white(&board, turnTimer)
 		} else {
-			move = black(&board, 30000)
+			move = black(&board, turnTimer)
 		}
 		player = !player
 		board.Apply(move)
