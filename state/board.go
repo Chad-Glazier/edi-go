@@ -1,14 +1,16 @@
 package state
 
+import "github.com/edi/bb"
+
 // Represents a board state.
 type Board struct {
 	// The occupied squares on the board. An occupied square is one that has
 	// either a queen or an arrow on it.
-	Occupancy BitBoard
+	Occupancy bb.BitBoard
 	// The positions of the black queens on the board.
-	Black BitBoard
+	Black bb.BitBoard
 	// The positions of the white queens on the board.
-	White BitBoard
+	White bb.BitBoard
 	// The most recent move made.
 	Move Move
 	// The player who can make the next move.

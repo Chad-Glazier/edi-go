@@ -3,10 +3,10 @@ package cli
 import (
 	"fmt"
 
-	"github.com/edi/state"
+	"github.com/edi/bb"
 )
 
-func PrintBitBoard(bb *state.BitBoard) {
+func PrintBitBoard(b *bb.BitBoard) {
 	fmt.Println()
 	fmt.Println("\t   0 1 2 3 4 5 6 7 8 9 ")
 	fmt.Println()
@@ -17,7 +17,7 @@ func PrintBitBoard(bb *state.BitBoard) {
 
 		for j := range 10 {
 
-			if bb.Flagged(state.Pos(i, j)) {
+			if b.Flagged(bb.Pos(i, j)) {
 				fmt.Print(" X")
 			} else {
 				fmt.Print(" .")

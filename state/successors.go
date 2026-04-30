@@ -1,5 +1,7 @@
 package state
 
+import "github.com/edi/bb"
+
 // Returns an unordered slice of all possible subsequent board states.
 func (board *Board) Successors() []Board {
 
@@ -7,10 +9,10 @@ func (board *Board) Successors() []Board {
 
 	if board.Player == WHITE {
 		i1 := board.White
-		for from := i1.Next(); from != NULL_POS; from = i1.Next() {
+		for from := i1.Next(); from != bb.NULL_POS; from = i1.Next() {
 
 			i2 := QNeighbors(board.Occupancy, from)
-			for to := i2.Next(); to != NULL_POS; to = i2.Next() {
+			for to := i2.Next(); to != bb.NULL_POS; to = i2.Next() {
 
 				board.White.Unflag(from)
 				board.White.Flag(to)
@@ -19,7 +21,7 @@ func (board *Board) Successors() []Board {
 				board.Occupancy.Flag(to)
 
 				i3 := QNeighbors(board.Occupancy, to)
-				for arrow := i3.Next(); arrow != NULL_POS; arrow = i3.Next() {
+				for arrow := i3.Next(); arrow != bb.NULL_POS; arrow = i3.Next() {
 
 					board.Occupancy.Flag(arrow)
 
@@ -47,10 +49,10 @@ func (board *Board) Successors() []Board {
 		}
 	} else {
 		i1 := board.Black
-		for from := i1.Next(); from != NULL_POS; from = i1.Next() {
+		for from := i1.Next(); from != bb.NULL_POS; from = i1.Next() {
 
 			i2 := QNeighbors(board.Occupancy, from)
-			for to := i2.Next(); to != NULL_POS; to = i2.Next() {
+			for to := i2.Next(); to != bb.NULL_POS; to = i2.Next() {
 
 				board.Black.Unflag(from)
 				board.Black.Flag(to)
@@ -59,7 +61,7 @@ func (board *Board) Successors() []Board {
 				board.Occupancy.Flag(to)
 
 				i3 := QNeighbors(board.Occupancy, to)
-				for arrow := i3.Next(); arrow != NULL_POS; arrow = i3.Next() {
+				for arrow := i3.Next(); arrow != bb.NULL_POS; arrow = i3.Next() {
 
 					board.Occupancy.Flag(arrow)
 

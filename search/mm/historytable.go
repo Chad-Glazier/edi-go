@@ -1,4 +1,4 @@
-package alpha_beta
+package mm
 
 import (
 	"sort"

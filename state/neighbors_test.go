@@ -1,8 +1,31 @@
 package state
 
 import (
+	"math/rand/v2"
 	"testing"
+
+	"github.com/edi/bb"
 )
+
+func randomBoard(density float64) (
+	b bb.BitBoard, flagged map[bb.Position]bool, flagCount int,
+) {
+	b = bb.BitBoard{}
+	flagged = make(map[bb.Position]bool, 100)
+	flagCount = 0
+
+	for pos := range bb.Position(100) {
+		if rand.Float64() < density {
+			flagged[pos] = true
+			b.Flag(pos)
+			flagCount++
+		} else {
+			flagged[pos] = false
+		}
+	}
+
+	return
+}
 
 //
 // Ground-truth functions. These implementations are certainly correct, just
@@ -13,10 +36,10 @@ func inBounds(row, col int) bool {
 	return row >= 0 && row < 10 && col >= 0 && col < 10
 }
 
-func expectedKNeighbors(occ BitBoard, pos Position) BitBoard {
+func expectedKNeighbors(occ bb.BitBoard, pos bb.Position) bb.BitBoard {
 
-	result := BitBoard{}
-	i, j := Coords(pos)
+	result := bb.BitBoard{}
+	i, j := bb.Coords(pos)
 
 	for di := -1; di <= 1; di++ {
 		for dj := -1; dj <= 1; dj++ {
@@ -27,7 +50,7 @@ func expectedKNeighbors(occ BitBoard, pos Position) BitBoard {
 			if !inBounds(nx, ny) {
 				continue
 			}
-			p := Pos(nx, ny)
+			p := bb.Pos(nx, ny)
 			if !occ.Flagged(p) {
 				result.Flag(p)
 			}
@@ -37,9 +60,9 @@ func expectedKNeighbors(occ BitBoard, pos Position) BitBoard {
 	return result
 }
 
-func expectedQNeighbors(occ BitBoard, pos Position) BitBoard {
-	result := BitBoard{}
-	i, j := Coords(pos)
+func expectedQNeighbors(occ bb.BitBoard, pos bb.Position) bb.BitBoard {
+	result := bb.BitBoard{}
+	i, j := bb.Coords(pos)
 
 	dirs := [8][2]int{
 		{1, 0}, {-1, 0}, {0, 1}, {0, -1},
@@ -49,7 +72,7 @@ func expectedQNeighbors(occ BitBoard, pos Position) BitBoard {
 	for _, d := range dirs {
 		ni, nj := i+d[0], j+d[1]
 		for inBounds(ni, nj) {
-			p := Pos(ni, nj)
+			p := bb.Pos(ni, nj)
 			if occ.Flagged(p) {
 				break
 			}
@@ -63,17 +86,17 @@ func expectedQNeighbors(occ BitBoard, pos Position) BitBoard {
 }
 
 func expectedFrontier(
-	occ BitBoard,
-	territory BitBoard,
-	neighborFn func(BitBoard, Position) BitBoard,
-) BitBoard {
+	occ bb.BitBoard,
+	territory bb.BitBoard,
+	neighborFn func(bb.BitBoard, bb.Position) bb.BitBoard,
+) bb.BitBoard {
 
-	result := BitBoard{}
+	result := bb.BitBoard{}
 
 	iter := territory
-	for pos := iter.Next(); pos != NULL_POS; pos = iter.Next() {
+	for pos := iter.Next(); pos != bb.NULL_POS; pos = iter.Next() {
 		neighbors := neighborFn(occ, pos)
-		for n := neighbors.Next(); n != NULL_POS; n = neighbors.Next() {
+		for n := neighbors.Next(); n != bb.NULL_POS; n = neighbors.Next() {
 			if !territory.Flagged(n) {
 				result.Flag(n)
 			}
@@ -91,7 +114,7 @@ func TestKNeighbors(t *testing.T) {
 	for range 50 {
 		occ, _, _ := randomBoard(0.2)
 
-		for pos := range Position(100) {
+		for pos := range bb.Position(100) {
 			got := KNeighbors(occ, pos)
 			expected := expectedKNeighbors(occ, pos)
 
@@ -99,7 +122,7 @@ func TestKNeighbors(t *testing.T) {
 				t.Fatalf("KNeighbors size mismatch at %d", pos)
 			}
 
-			for p := expected.Next(); p != NULL_POS; p = expected.Next() {
+			for p := expected.Next(); p != bb.NULL_POS; p = expected.Next() {
 				if !got.Flagged(p) {
 					t.Errorf("KNeighbors missing %d from %d", p, pos)
 				}
@@ -112,7 +135,7 @@ func TestQNeighbors(t *testing.T) {
 	for range 50 {
 		occ, _, _ := randomBoard(0.2)
 
-		for pos := range Position(100) {
+		for pos := range bb.Position(100) {
 			got := QNeighbors(occ, pos)
 			expected := expectedQNeighbors(occ, pos)
 
@@ -121,7 +144,7 @@ func TestQNeighbors(t *testing.T) {
 			}
 
 			iter := expected
-			for p := iter.Next(); p != NULL_POS; p = iter.Next() {
+			for p := iter.Next(); p != bb.NULL_POS; p = iter.Next() {
 				if !got.Flagged(p) {
 					t.Errorf("QNeighbors missing %d from %d", p, pos)
 				}
@@ -143,7 +166,7 @@ func TestKFrontier(t *testing.T) {
 		}
 
 		iter := expected
-		for p := iter.Next(); p != NULL_POS; p = iter.Next() {
+		for p := iter.Next(); p != bb.NULL_POS; p = iter.Next() {
 			if !got.Flagged(p) {
 				t.Errorf("KFrontier missing %d", p)
 			}
@@ -164,7 +187,7 @@ func TestQFrontier(t *testing.T) {
 		}
 
 		iter := expected
-		for p := iter.Next(); p != NULL_POS; p = iter.Next() {
+		for p := iter.Next(); p != bb.NULL_POS; p = iter.Next() {
 			if !got.Flagged(p) {
 				t.Errorf("QFrontier missing %d", p)
 			}

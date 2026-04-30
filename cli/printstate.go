@@ -3,6 +3,7 @@ package cli
 import (
 	"fmt"
 
+	"github.com/edi/bb"
 	"github.com/edi/state"
 )
 
@@ -20,17 +21,17 @@ func PrintState(board *state.Board) {
 		for col := range 10 {
 			s := fgBrightBlack("\u00B7")
 			switch {
-			case board.White.Flagged(state.Pos(row, col)):
+			case board.White.Flagged(bb.Pos(row, col)):
 				s = fgBrightCyan("\u25A0")
 				if board.Player == state.WHITE {
 					s = blink(s)
 				}
-			case board.Black.Flagged(state.Pos(row, col)):
+			case board.Black.Flagged(bb.Pos(row, col)):
 				s = fgBrightRed("\u25A0")
 				if board.Player == state.BLACK {
 					s = blink(s)
 				}
-			case board.Occupancy.Flagged(state.Pos(row, col)):
+			case board.Occupancy.Flagged(bb.Pos(row, col)):
 				s = fgWhite("\u2715")
 			}
 			fmt.Print(" " + s)

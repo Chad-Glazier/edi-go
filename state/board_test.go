@@ -7,6 +7,6 @@ import (
 func BenchmarkSuccessors(b *testing.B) {
 	board := InitialState()
 	for b.Loop() {
-		blackHole = board.Successors()
+		board.Successors()
 	}
 }

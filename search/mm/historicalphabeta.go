@@ -1,4 +1,4 @@
-package alpha_beta
+package mm
 
 import (
 	"math"
@@ -9,17 +9,16 @@ import (
 	"github.com/edi/state"
 )
 
-type alphaBetaState struct {
+type historicAlphaBetaState struct {
 	heuristic eval.EvaluationFunc
 	history   *historyTable
-	timeout   chan bool
 }
 
 // Creates a new search function using the Minimax algorithm with alpha-beta
 // pruning and the history heuristic for move ordering.
 func HistoricAlphaBeta(heuristic eval.EvaluationFunc) search.SearchFunc {
 
-	ab := &alphaBetaState{
+	ab := &historicAlphaBetaState{
 		heuristic: heuristic,
 		history:   &historyTable{},
 	}
@@ -27,7 +26,7 @@ func HistoricAlphaBeta(heuristic eval.EvaluationFunc) search.SearchFunc {
 	return ab.search
 }
 
-func (s *alphaBetaState) search(
+func (s *historicAlphaBetaState) search(
 	board *state.Board, timeLimit time.Duration,
 ) *state.Move {
 
@@ -58,7 +57,7 @@ func (s *alphaBetaState) search(
 
 // Conducts a depth-limited search from the specified state and returns the
 // immediate child which has the best minimax score.
-func (s *alphaBetaState) depthLimitedSearch(
+func (s *historicAlphaBetaState) depthLimitedSearch(
 	board *state.Board, depth int,
 ) *state.Board {
 
@@ -95,7 +94,7 @@ func (s *alphaBetaState) depthLimitedSearch(
 }
 
 // Conducts a recursive search to find the minimax score of a state.
-func (s *alphaBetaState) alphaBeta(
+func (s *historicAlphaBetaState) alphaBeta(
 	board *state.Board,
 	alpha, beta float64,
 	depth int, color float64,

@@ -1,12 +1,9 @@
-package state
+package bb
 
 import (
 	"math/rand"
 	"testing"
 )
-
-// Used to "consume" values to avoid dead code or "unused variable" errors.
-var blackHole any
 
 func randomBoard(density float64) (
 	bb BitBoard, flagged map[Position]bool, flagCount int,
@@ -82,7 +79,7 @@ func BenchmarkNext(b *testing.B) {
 	for b.Loop() {
 		iter := bb
 		for pos := iter.Next(); pos != NULL_POS; pos = iter.Next() {
-			blackHole = pos
+			// nothing.
 		}
 	}
 }
@@ -140,10 +137,10 @@ func TestMsbLsb(t *testing.T) {
 func BenchmarkBitwiseOperations(b *testing.B) {
 	x, y := BitBoard{}, BitBoard{}
 	for b.Loop() {
-		blackHole = x.Or(y)
-		blackHole = x.Xor(y)
-		blackHole = x.And(y)
-		blackHole = x.AndNot(y)
-		blackHole = x.Not()
+		x.Or(y)
+		x.Xor(y)
+		x.And(y)
+		x.AndNot(y)
+		x.Not()
 	}
 }
