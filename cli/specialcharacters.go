@@ -20,6 +20,7 @@ const (
 	DIAG_LOWER_RIGHT    = "\u2572" // ╲
 )
 
+// Repeat a string some number of times.
 func repeat(times int, str string) string {
 	var s strings.Builder
 	for range times {

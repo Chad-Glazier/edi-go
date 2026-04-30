@@ -2,6 +2,24 @@ package state
 
 import "github.com/edi/bb"
 
+// Represents a player color.
+type PlayerColor byte
+
+const (
+	WHITE PlayerColor = 0  // Represents the player on White
+	BLACK PlayerColor = 1 // Represents the player on Black
+)
+
+// Represents a move.
+type Move struct {
+	// The original position of the queen being moved.
+	From bb.Position
+	// The new position of the queen being moved.
+	To bb.Position
+	// The position where the queen fired her arrow.
+	Arrow bb.Position
+}
+
 // Represents a board state.
 type Board struct {
 	// The occupied squares on the board. An occupied square is one that has

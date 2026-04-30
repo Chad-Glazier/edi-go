@@ -10,13 +10,13 @@ import (
 )
 
 type historicAlphaBetaState struct {
-	heuristic eval.EvaluationFunc
+	heuristic eval.EvalFunc
 	history   *historyTable
 }
 
 // Creates a new search function using the Minimax algorithm with alpha-beta
 // pruning and the history heuristic for move ordering.
-func HistoricAlphaBeta(heuristic eval.EvaluationFunc) search.SearchFunc {
+func HistoricAlphaBeta(heuristic eval.EvalFunc) search.SearchFunc {
 
 	ab := &historicAlphaBetaState{
 		heuristic: heuristic,

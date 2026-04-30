@@ -10,12 +10,12 @@ import (
 )
 
 type alphaBetaState struct {
-	heuristic eval.EvaluationFunc
+	heuristic eval.EvalFunc
 }
 
 // Creates a new search function using the Minimax algorithm with alpha-beta
 // pruning and no move-ordering.
-func AlphaBeta(heuristic eval.EvaluationFunc) search.SearchFunc {
+func AlphaBeta(heuristic eval.EvalFunc) search.SearchFunc {
 
 	ab := &alphaBetaState{
 		heuristic: heuristic,
