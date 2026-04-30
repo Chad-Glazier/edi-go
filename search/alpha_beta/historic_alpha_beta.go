@@ -60,7 +60,7 @@ func (s *alphaBetaState) depthLimitedSearch(
 	s.history.Sort(children)
 
 	var color float64
-	if board.WhiteIsActive() {
+	if board.Player == state.WHITE {
 		color = +1
 	} else {
 		color = -1

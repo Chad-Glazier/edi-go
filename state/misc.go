@@ -1,11 +1,11 @@
 package state
 
 // Represents a player color.
-type PlayerColor bool
+type PlayerColor byte
 
 const (
-	WHITE PlayerColor = true  // Represents the player on White
-	BLACK PlayerColor = false // Represents the player on Black
+	WHITE PlayerColor = 0  // Represents the player on White
+	BLACK PlayerColor = 1 // Represents the player on Black
 )
 
 const (

@@ -22,12 +22,12 @@ func PrintState(board *state.Board) {
 			switch {
 			case board.White.Flagged(state.Pos(row, col)):
 				s = fgBrightCyan("\u25A0")
-				if board.WhiteIsActive() {
+				if board.Player == state.WHITE {
 					s = blink(s)
 				}
 			case board.Black.Flagged(state.Pos(row, col)):
 				s = fgBrightRed("\u25A0")
-				if board.BlackIsActive() {
+				if board.Player == state.BLACK {
 					s = blink(s)
 				}
 			case board.Occupancy.Flagged(state.Pos(row, col)):

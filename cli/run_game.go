@@ -22,13 +22,13 @@ func RunGame(white, black search.SearchFunc, turnTimer time.Duration) {
 		} else {
 			move = black(&board, turnTimer)
 		}
-		player = !player
+		player = player + 1 % 2
 		board.Apply(move)
 		clearScreen()
 		PrintState(&board)
 	}
 
-	if (player == state.WHITE) {
+	if player == state.WHITE {
 		fmt.Println("Black Wins")
 	} else {
 		fmt.Println("White Wins")

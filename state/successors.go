@@ -3,15 +3,16 @@ package state
 // Returns an unordered slice of all possible subsequent board states.
 func (board *Board) Successors() []Board {
 
-	// At most, there are 2176 possible moves in an Amazons board state.
+	// At most, there are roughly possible moves in an Amazons board state.
 	// When we recursively expand child nodes, we still only have as many
 	// children expanded as the search tree is deep. Since the search tree only
 	// gets to a depth of about 3-10 for the vast majority of the game, we can
 	// afford to allocate the full maximum width; sacrificing this meager
-	// amount of memory for (according to benchmarks) a speedup of about 2x.
-	successors := make([]Board, 0, 2176)
+	// amount of memory to ensure that we dont have to do any (slow) slice
+	// reallocations.
+	successors := make([]Board, 0, 3000)
 
-	if board.WhiteIsActive() {
+	if board.Player == WHITE {
 		i1 := board.White
 		for from := i1.Next(); from != NULL_POS; from = i1.Next() {
 
@@ -33,6 +34,7 @@ func (board *Board) Successors() []Board {
 						Occupancy: board.Occupancy,
 						White:     board.White,
 						Black:     board.Black,
+						Player:    BLACK,
 						Move: Move{
 							From:  from,
 							To:    to,
@@ -72,6 +74,7 @@ func (board *Board) Successors() []Board {
 						Occupancy: board.Occupancy,
 						White:     board.White,
 						Black:     board.Black,
+						Player:    WHITE,
 						Move: Move{
 							From:  from,
 							To:    to,

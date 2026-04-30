@@ -11,19 +11,8 @@ type Board struct {
 	White BitBoard
 	// The most recent move made.
 	Move Move
-}
-
-// Returns true if and only if White gets to make the next move.
-func (board *Board) WhiteIsActive() bool {
-	// If the occupancy board has an even number of flags (i.e., sum of arrows
-	// and queens), then the active player is White. Otherwise, the active
-	// player is Black.
-	return board.Occupancy.Count()%2 == 0
-}
-
-// Returns true if and only if Black gets to make the next move.
-func (board *Board) BlackIsActive() bool {
-	return board.Occupancy.Count()%2 != 0
+	// The player who can make the next move.
+	Player PlayerColor
 }
 
 // Applies a move to the board, mutating its state.

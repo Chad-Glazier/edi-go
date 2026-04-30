@@ -18,14 +18,9 @@ type historyTable struct {
 	scores [2][100][100][100]int32
 }
 
-func (history *historyTable) score(state *state.Board) *int32 {
-	if state.WhiteIsActive() {
-		return &history.
-			scores[0][state.Move.From][state.Move.To][state.Move.Arrow]
-	} else {
-		return &history.
-			scores[1][state.Move.From][state.Move.To][state.Move.Arrow]
-	}
+func (history *historyTable) score(board *state.Board) *int32 {
+	return &history.
+		scores[board.Player][board.Move.From][board.Move.To][board.Move.Arrow]
 }
 
 // Retrieves the history score of the current state's move.

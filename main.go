@@ -12,6 +12,6 @@ func main() {
 	cli.RunGame(
 		alpha_beta.HistoricAlphaBeta(eval.KMinDist),
 		alpha_beta.HistoricAlphaBeta(eval.KMinDist),
-		time.Second * 5,
+		time.Second*5,
 	)
 }
