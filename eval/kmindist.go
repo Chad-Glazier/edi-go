@@ -1,6 +1,6 @@
 package eval
 
-import "github.com/edi/state"
+import "github.com/Chad-Glazier/edi/state"
 
 // Partitions territory between Black and White based on who can reach a given
 // square faster if their queens moved the way that chess kings do, then

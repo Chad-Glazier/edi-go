@@ -4,7 +4,7 @@ import (
 	"math/rand/v2"
 	"testing"
 
-	"github.com/edi/bb"
+	"github.com/Chad-Glazier/edi/bb"
 )
 
 func randomBoard(density float64) (

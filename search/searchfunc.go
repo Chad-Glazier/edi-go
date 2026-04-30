@@ -3,7 +3,7 @@ package search
 import (
 	"time"
 
-	"github.com/edi/state"
+	"github.com/Chad-Glazier/edi/state"
 )
 
 // Looks at a given boardstate and yields a recommended move within the given

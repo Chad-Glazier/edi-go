@@ -1,6 +1,6 @@
 package state
 
-import "github.com/edi/bb"
+import "github.com/Chad-Glazier/edi/bb"
 
 // Returns a bitboard where each neighbor of a given position is flagged, where
 // two squares p and q are neighbors if and only if a chess king could move

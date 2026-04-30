@@ -1,12 +1,12 @@
-package vi
+package edi
 
 import (
 	"time"
 
-	"github.com/edi/eval"
-	"github.com/edi/search"
-	"github.com/edi/search/mm"
-	"github.com/edi/state"
+	"github.com/Chad-Glazier/edi/eval"
+	"github.com/Chad-Glazier/edi/search"
+	"github.com/Chad-Glazier/edi/search/mm"
+	"github.com/Chad-Glazier/edi/state"
 )
 
 // EDI is the flagship VI for this project. At the time of writing, she uses:

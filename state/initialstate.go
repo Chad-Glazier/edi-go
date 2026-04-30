@@ -1,6 +1,6 @@
 package state
 
-import "github.com/edi/bb"
+import "github.com/Chad-Glazier/edi/bb"
 
 func InitialState() Board {
 	board := Board{}

@@ -1,12 +1,12 @@
 package state
 
-import "github.com/edi/bb"
+import "github.com/Chad-Glazier/edi/bb"
 
 // Represents a player color.
 type PlayerColor byte
 
 const (
-	WHITE PlayerColor = 0  // Represents the player on White
+	WHITE PlayerColor = 0 // Represents the player on White
 	BLACK PlayerColor = 1 // Represents the player on Black
 )
 

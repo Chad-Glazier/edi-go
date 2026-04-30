@@ -1,6 +1,6 @@
 package eval
 
-import "github.com/edi/state"
+import "github.com/Chad-Glazier/edi/state"
 
 // A function that evaluates a board state and returns a score that reflects
 // the quality of the position. Positive values indicate favorability for

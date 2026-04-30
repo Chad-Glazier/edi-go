@@ -4,9 +4,9 @@ import (
 	"math"
 	"time"
 
-	"github.com/edi/eval"
-	"github.com/edi/search"
-	"github.com/edi/state"
+	"github.com/Chad-Glazier/edi/eval"
+	"github.com/Chad-Glazier/edi/search"
+	"github.com/Chad-Glazier/edi/state"
 )
 
 type historicAlphaBetaState struct {

@@ -3,7 +3,7 @@ package eval
 import (
 	"testing"
 
-	"github.com/edi/state"
+	"github.com/Chad-Glazier/edi/state"
 )
 
 func BenchmarkKMinDist(b *testing.B) {

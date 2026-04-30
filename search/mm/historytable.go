@@ -3,7 +3,7 @@ package mm
 import (
 	"sort"
 
-	"github.com/edi/state"
+	"github.com/Chad-Glazier/edi/state"
 )
 
 const MAX_HISTORY int32 = 2 << 13
