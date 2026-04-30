@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/edi/search"
 	"github.com/edi/state"
+	"github.com/edi/vi"
 )
 
-func RunGame(white, black search.SearchFunc, turnTimer time.Duration) {
+func RunGame(white, black vi.VI, turnTimer time.Duration) {
 	board := state.InitialState()
 	clearScreen()
 	PrintState(&board)
@@ -18,10 +18,10 @@ func RunGame(white, black search.SearchFunc, turnTimer time.Duration) {
 	for len(board.Successors()) != 0 {
 		var move *state.Move
 		if player == state.WHITE {
-			move = white(&board, turnTimer)
+			move = white.Consult(&board, turnTimer)
 			player = state.BLACK
 		} else {
-			move = black(&board, turnTimer)
+			move = black.Consult(&board, turnTimer)
 			player = state.WHITE
 		}
 		board.Apply(move)

@@ -4,14 +4,13 @@ import (
 	"time"
 
 	"github.com/edi/cli"
-	"github.com/edi/eval"
-	"github.com/edi/search/mm"
+	"github.com/edi/vi"
 )
 
 func main() {
 	cli.RunGame(
-		mm.AlphaBeta(eval.KMinDist),
-		mm.HistoricAlphaBeta(eval.KMinDist),
+		&vi.EDI{},
+		&vi.EDI{},
 		time.Second*5,
 	)
 }
