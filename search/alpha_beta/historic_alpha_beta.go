@@ -28,22 +28,32 @@ func HistoricAlphaBeta(heuristic eval.EvaluationFunc) search.SearchFunc {
 }
 
 func (s *alphaBetaState) search(
-	board *state.Board, time time.Duration,
+	board *state.Board, timeLimit time.Duration,
 ) *state.Move {
 
+	maxDepth := 100 - board.Occupancy.Count()
+	complete := make(chan bool)
 	var bestMove *state.Move
 
-	for depth := 1; depth <= 3; depth++ {
-		bestChildAtDepth := s.depthLimitedSearch(board, depth)
+	go func() {
+		for depth := 1; depth <= maxDepth; depth++ {
+			bestChildAtDepth := s.depthLimitedSearch(board, depth)
 
-		if bestChildAtDepth == nil {
-			break
+			if bestChildAtDepth == nil {
+				break
+			}
+
+			bestMove = &bestChildAtDepth.Move
 		}
+		complete <- true
+	}()
 
-		bestMove = &bestChildAtDepth.Move
+	select {
+	case <-time.After(timeLimit):
+		return bestMove
+	case <-complete:
+		return bestMove
 	}
-
-	return bestMove
 }
 
 // Conducts a depth-limited search from the specified state and returns the

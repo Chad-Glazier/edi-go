@@ -3,14 +3,7 @@ package state
 // Returns an unordered slice of all possible subsequent board states.
 func (board *Board) Successors() []Board {
 
-	// At most, there are roughly possible moves in an Amazons board state.
-	// When we recursively expand child nodes, we still only have as many
-	// children expanded as the search tree is deep. Since the search tree only
-	// gets to a depth of about 3-10 for the vast majority of the game, we can
-	// afford to allocate the full maximum width; sacrificing this meager
-	// amount of memory to ensure that we dont have to do any (slow) slice
-	// reallocations.
-	successors := make([]Board, 0, 3000)
+	successors := make([]Board, 0, SUCCESSOR_INITIAL_CAPACITY)
 
 	if board.Player == WHITE {
 		i1 := board.White

@@ -19,10 +19,11 @@ func RunGame(white, black search.SearchFunc, turnTimer time.Duration) {
 		var move *state.Move
 		if player == state.WHITE {
 			move = white(&board, turnTimer)
+			player = state.BLACK
 		} else {
 			move = black(&board, turnTimer)
+			player = state.WHITE
 		}
-		player = player + 1 % 2
 		board.Apply(move)
 		clearScreen()
 		PrintState(&board)

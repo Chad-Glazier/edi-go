@@ -20,9 +20,11 @@ func (board *Board) Apply(move *Move) {
 	if board.Black.Flagged(move.From) {
 		board.Black.Unflag(move.From)
 		board.Black.Flag(move.To)
+		board.Player = WHITE
 	} else {
 		board.White.Unflag(move.From)
 		board.White.Flag(move.To)
+		board.Player = BLACK
 	}
 	board.Occupancy.Unflag(move.From)
 	board.Occupancy.Flag(move.To)

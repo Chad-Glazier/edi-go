@@ -12,6 +12,6 @@ func BenchmarkHistoricAlphaBeta(b *testing.B) {
 	board := state.InitialState()
 	search := HistoricAlphaBeta(eval.KMinDist)
 	for b.Loop() {
-		search(&board, time.Second * 10)
+		search(&board, time.Second*5)
 	}
 }
