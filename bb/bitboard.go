@@ -65,7 +65,7 @@ func (bb *BitBoard) Empty() bool {
 
 // Returns true if and only if the bitboard has at least one flag.
 func (bb *BitBoard) NotEmpty() bool {
-	return bb.lo != 0 || bb.hi != 0
+	return (bb.lo | bb.hi) != 0
 }
 
 // Returns the "lowest" position on the board, meaning that which is the
@@ -87,7 +87,7 @@ func (bb *BitBoard) Next() Position {
 }
 
 // Returns the number of flagged positions on this board.
-func (bb *BitBoard) Count() int {
+func (bb BitBoard) Count() int {
 	return bits.OnesCount64(bb.lo) + bits.OnesCount64(bb.hi)
 }
 
