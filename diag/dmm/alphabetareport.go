@@ -20,6 +20,8 @@ type AlphaBetaReport interface {
 	Leaves(searchDepth int) uint64
 	// The number of cutoffs that were produced at each depth.
 	Cutoffs(searchDepth, cutoffDepth int) uint64
+	// The recommended move.
+	Move() state.Move
 }
 
 // A struct that stores data for a report. During an alpha-beta search, this
@@ -29,6 +31,7 @@ type report struct {
 	// implementations, uses iterative deepening).
 	completedSearches []completeSearch
 	current           ongoingSearch
+	move              state.Move
 }
 
 type completeSearch struct {
@@ -59,4 +62,8 @@ func (r *report) Leaves(searchDepth int) uint64 {
 
 func (r *report) Cutoffs(searchDepth, cutoffDepth int) uint64 {
 	return r.completedSearches[searchDepth].cutoffs[cutoffDepth]
+}
+
+func (r *report) Move() state.Move {
+	return r.move
 }

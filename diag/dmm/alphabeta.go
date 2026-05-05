@@ -44,6 +44,8 @@ func (s *alphaBetaState) search(
 			bestChildAtDepth := s.depthLimitedSearch(board, depth)
 			now := time.Now()
 
+			s.report.move = bestChildAtDepth.Move
+
 			s.report.completedSearches =
 				append(s.report.completedSearches, completeSearch{
 					duration: now.Sub(then),
