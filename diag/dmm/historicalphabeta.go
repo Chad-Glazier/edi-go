@@ -1,26 +1,27 @@
-package mm
+package dmm
 
 import (
 	"math"
 	"time"
 
 	"github.com/Chad-Glazier/edi/eval"
-	"github.com/Chad-Glazier/edi/search"
+	"github.com/Chad-Glazier/edi/search/mm"
 	"github.com/Chad-Glazier/edi/state"
 )
 
 type historicAlphaBetaState struct {
 	heuristic eval.EvalFunc
-	history   *HistoryTable
+	history   *mm.HistoryTable
+	report    report
 }
 
 // Creates a new search function using the Minimax algorithm with alpha-beta
 // pruning and the history heuristic for move ordering.
-func HistoricAlphaBeta(heuristic eval.EvalFunc) search.SearchFunc {
+func HistoricAlphaBeta(heuristic eval.EvalFunc) DAlphaBetaSearch {
 
 	ab := &historicAlphaBetaState{
 		heuristic: heuristic,
-		history:   &HistoryTable{},
+		history:   &mm.HistoryTable{},
 	}
 
 	return ab.search
@@ -28,30 +29,44 @@ func HistoricAlphaBeta(heuristic eval.EvalFunc) search.SearchFunc {
 
 func (s *historicAlphaBetaState) search(
 	board *state.Board, timeLimit time.Duration,
-) *state.Move {
+) AlphaBetaReport {
 
 	maxDepth := 100 - board.Occupancy.Count()
 	complete := make(chan bool)
-	var bestMove *state.Move
+
+	s.report.completedSearches = make([]completeSearch, 1, 10)
+	s.report.completedSearches[0] = completeSearch{}
 
 	go func() {
 		for depth := 1; depth <= maxDepth; depth++ {
+			s.report.current.leaves = 0
+			s.report.current.cutoffs = make([]uint64, depth+1)
+
+			then := time.Now()
 			bestChildAtDepth := s.depthLimitedSearch(board, depth)
+			now := time.Now()
+
+			s.report.move = bestChildAtDepth.Move
+
+			s.report.completedSearches =
+				append(s.report.completedSearches, completeSearch{
+					duration: now.Sub(then),
+					leaves:   s.report.current.leaves,
+					cutoffs:  s.report.current.cutoffs,
+				})
 
 			if bestChildAtDepth == nil {
 				break
 			}
-
-			bestMove = &bestChildAtDepth.Move
 		}
 		complete <- true
 	}()
 
 	select {
 	case <-time.After(timeLimit):
-		return bestMove
+		return &s.report
 	case <-complete:
-		return bestMove
+		return &s.report
 	}
 }
 
@@ -104,11 +119,13 @@ func (s *historicAlphaBetaState) alphaBeta(
 	// update the history table.
 
 	if depth == 0 {
+		s.report.current.leaves++
 		return color * s.heuristic(board)
 	}
 
 	children := board.Successors()
 	if len(children) == 0 {
+		s.report.current.leaves++
 		return color * s.heuristic(board)
 	}
 
@@ -120,6 +137,7 @@ func (s *historicAlphaBetaState) alphaBeta(
 			score = result
 		}
 		if score >= beta {
+			s.report.current.cutoffs[depth]++
 			s.history.IncreaseScore(&child, depth)
 			break
 		}

@@ -36,7 +36,6 @@ func (s *alphaBetaState) search(
 
 	go func() {
 		for depth := 1; depth <= maxDepth; depth++ {
-
 			s.report.current.leaves = 0
 			s.report.current.cutoffs = make([]uint64, depth+1)
 
