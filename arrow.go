@@ -12,8 +12,8 @@ import (
 // Arrow is a program that was created by Martin Müller and Theodore Tegos,
 // described in their paper "Experiments in Computer Amazons." They describe
 // multiple versions which are selective/non-selective; this implementation
-// is non-selective. I.e., it's basic alpha-beta search that uses QMinDist to
-// evaluate leaf nodes and uses no move-ordering heuristic.
+// is non-selective. That is, it's just normal alpha-beta search which uses
+// QMinDist to evaluate leaf nodes.
 type Arrow struct {
 	searchMethod search.SearchFunc
 }

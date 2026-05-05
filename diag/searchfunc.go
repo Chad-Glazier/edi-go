@@ -12,6 +12,6 @@ type Report interface {
 	dmm.AlphaBetaReport
 }
 
-// Represents a diagnostic search function. I.e., a search function that
+// Represents a diagnostic search function, a search function that
 // returns a report including relevant metrics instead of just a move.
 type SearchFunc[R Report] func(board *state.Board, time time.Duration) R

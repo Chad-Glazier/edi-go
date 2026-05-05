@@ -6,7 +6,7 @@ import (
 	"github.com/Chad-Glazier/edi/state"
 )
 
-// An alpha-beta search function that returns a search report instead of a 
+// An alpha-beta search function that returns a search report instead of a
 // recommended move.
 type AlphaBetaSearch = func(board *state.Board, time time.Duration) AlphaBetaReport
 

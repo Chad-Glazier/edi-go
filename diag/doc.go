@@ -6,7 +6,7 @@ strictly for collecting diagnostic data and should not be used in place of the
 normal implementations.
 
 Note that this package is meant specifically for diagnosing search functions,
-not VI's. VI's use search functions to make decisions, but they are not the
-same thing.
+not for diagnosing VI's. VI's typically use search functions to make decisions,
+but they are not the same thing.
 */
 package diag
