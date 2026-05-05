@@ -9,10 +9,9 @@ import (
 	"github.com/Chad-Glazier/edi/state"
 )
 
-// EDI is the flagship VI for this project. At the time of writing, she uses:
-// - Minimax search with alpha-beta pruning.
-// - The History Heuristic for move ordering.
-// - The KMinDist function for leaf node evaluation.
+// EDI is the flagship VI for this project. At the time of writing she uses
+// alpha-beta search with the History Heuristic for move ordering and the
+// KMinDist function for leaf node evaluation.
 type EDI struct {
 	searchMethod search.SearchFunc
 }

@@ -5,7 +5,7 @@ import (
 )
 
 // Partitions territory between Black and White based on who can reach a given
-// square faster if their queens moved the way that chess kings do, then
+// square faster if their queens moved the way that chess queens do, then
 // calculates a score based on the sizes of the territories.
 func QMinDist(board *state.Board) float64 {
 
