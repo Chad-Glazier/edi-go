@@ -17,7 +17,7 @@ type historicAlphaBetaState struct {
 
 // Creates a new search function using the Minimax algorithm with alpha-beta
 // pruning and the history heuristic for move ordering.
-func HistoricAlphaBeta(heuristic eval.EvalFunc) DAlphaBetaSearch {
+func HistoricAlphaBeta(heuristic eval.EvalFunc) AlphaBetaSearch {
 
 	ab := &historicAlphaBetaState{
 		heuristic: heuristic,

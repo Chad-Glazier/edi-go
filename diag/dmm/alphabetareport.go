@@ -6,9 +6,9 @@ import (
 	"github.com/Chad-Glazier/edi/state"
 )
 
-// A search function that returns a search report instead of a recommended
-// move. The "D" stands for "diagnostic."
-type DAlphaBetaSearch = func(board *state.Board, time time.Duration) AlphaBetaReport
+// An alpha-beta search function that returns a search report instead of a 
+// recommended move.
+type AlphaBetaSearch = func(board *state.Board, time time.Duration) AlphaBetaReport
 
 // Contains the information about how an alpha-beta search went.
 type AlphaBetaReport interface {
