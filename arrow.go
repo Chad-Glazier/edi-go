@@ -9,10 +9,11 @@ import (
 	"github.com/Chad-Glazier/edi/state"
 )
 
-// EDI is the flagship VI for this project. At the time of writing, she uses:
-// - Minimax search with alpha-beta pruning.
-// - The History Heuristic for move ordering.
-// - The KMinDist function for leaf node evaluation.
+// Arrow is a program that was created by Martin Müller and Theodore Tegos, 
+// described in their paper "Experiments in Computer Amazons." They describe
+// multiple versions which are selective/non-selective; this implementation
+// is non-selective. I.e., it's basic alpha-beta search that uses QMinDist to
+// evaluate leaf nodes.
 type Arrow struct {
 	searchMethod search.SearchFunc
 }
