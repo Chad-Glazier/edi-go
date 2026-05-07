@@ -43,9 +43,9 @@ func (bb *BitBoard) Flag(pos Position) {
 // Unflags a bit in the bitboard.
 func (bb *BitBoard) Unflag(pos Position) {
 	if pos < 64 {
-		bb.lo = bb.lo &^ (1 << pos)
+		bb.lo &^= 1 << pos
 	} else {
-		bb.hi = bb.hi &^ (1 << (pos - 64))
+		bb.hi &^= 1 << (pos - 64)
 	}
 }
 
