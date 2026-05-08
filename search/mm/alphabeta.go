@@ -9,23 +9,10 @@ import (
 	"github.com/Chad-Glazier/edi/state"
 )
 
-type alphaBetaState struct {
-	heuristic eval.EvalFunc
-}
-
-// Creates a new search function using the Minimax algorithm with alpha-beta
-// pruning and no move-ordering.
-func AlphaBeta(heuristic eval.EvalFunc) search.SearchFunc {
-
-	ab := &alphaBetaState{
-		heuristic: heuristic,
-	}
-
-	return ab.search
-}
-
-func (s *alphaBetaState) search(
-	board *state.Board, timeLimit time.Duration,
+func AlphaBeta(
+	board *state.Board, 
+	timeLimit time.Duration, 
+	heuristic eval.EvalFunc,
 ) *state.Move {
 
 	maxDepth := 100 - board.Occupancy.Count()
@@ -55,7 +42,7 @@ func (s *alphaBetaState) search(
 
 // Conducts a depth-limited search from the specified state and returns the
 // immediate child which has the best minimax score.
-func (s *alphaBetaState) depthLimitedSearch(
+func depthLimitedSearch(
 	board *state.Board, depth int,
 ) *state.Board {
 
@@ -77,7 +64,7 @@ func (s *alphaBetaState) depthLimitedSearch(
 
 	for _, child := range children {
 
-		score := -s.alphaBeta(&child, -beta, -alpha, depth-1, -color)
+		score := -alphaBeta(&child, -beta, -alpha, depth-1, -color)
 
 		if score > alpha {
 			alpha = score
@@ -90,7 +77,7 @@ func (s *alphaBetaState) depthLimitedSearch(
 }
 
 // Conducts a recursive search to find the minimax score of a state.
-func (s *alphaBetaState) alphaBeta(
+func alphaBeta(
 	board *state.Board,
 	alpha, beta float64,
 	depth int, color float64,
@@ -110,7 +97,7 @@ func (s *alphaBetaState) alphaBeta(
 
 	score := math.Inf(-1)
 	for _, child := range children {
-		result := -s.alphaBeta(&child, -beta, -alpha, depth-1, -color)
+		result := -alphaBeta(&child, -beta, -alpha, depth-1, -color)
 		if result > score {
 			score = result
 		}

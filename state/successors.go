@@ -19,14 +19,12 @@ func (board *Board) Successors() []Board {
 	successors := make([]Board, 0, SUCCESSOR_INITIAL_CAPACITY)
 
 	if board.Player == WHITE {
-		i1 := board.White
-		for from := i1.Next(); from != bb.NULL_POS; from = i1.Next() {
+		for queenIdx, from := range board.White {
 
 			i2 := QNeighbors(board.Occupancy, from)
 			for to := i2.Next(); to != bb.NULL_POS; to = i2.Next() {
 
-				board.White.Unflag(from)
-				board.White.Flag(to)
+				board.White[queenIdx] = to
 
 				board.Occupancy.Unflag(from)
 				board.Occupancy.Flag(to)
@@ -51,22 +49,19 @@ func (board *Board) Successors() []Board {
 					board.Occupancy.Unflag(arrow)
 				}
 
-				board.White.Flag(from)
-				board.White.Unflag(to)
+				board.White[queenIdx] = from
 
 				board.Occupancy.Flag(from)
 				board.Occupancy.Unflag(to)
 			}
 		}
 	} else {
-		i1 := board.Black
-		for from := i1.Next(); from != bb.NULL_POS; from = i1.Next() {
+		for queenIdx, from := range board.Black {
 
 			i2 := QNeighbors(board.Occupancy, from)
 			for to := i2.Next(); to != bb.NULL_POS; to = i2.Next() {
 
-				board.Black.Unflag(from)
-				board.Black.Flag(to)
+				board.Black[queenIdx] = to
 
 				board.Occupancy.Unflag(from)
 				board.Occupancy.Flag(to)
@@ -91,8 +86,7 @@ func (board *Board) Successors() []Board {
 					board.Occupancy.Unflag(arrow)
 				}
 
-				board.Black.Flag(from)
-				board.Black.Unflag(to)
+				board.Black[queenIdx] = from
 
 				board.Occupancy.Flag(from)
 				board.Occupancy.Unflag(to)

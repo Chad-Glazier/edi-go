@@ -3,27 +3,18 @@ package state
 import "github.com/Chad-Glazier/edi/bb"
 
 func InitialState() Board {
-	board := Board{}
+	board := Board{
+		Player: WHITE,
+		White: [4]bb.Position{ 30, 03, 06, 39 },
+		Black: [4]bb.Position{ 60, 93, 96, 69 },
+	}
 
-	// Set the white queens.
-	board.White.Flag(bb.Pos(3, 0))
-	board.Occupancy.Flag(bb.Pos(3, 0))
-	board.White.Flag(bb.Pos(0, 3))
-	board.Occupancy.Flag(bb.Pos(0, 3))
-	board.White.Flag(bb.Pos(0, 6))
-	board.Occupancy.Flag(bb.Pos(0, 6))
-	board.White.Flag(bb.Pos(3, 9))
-	board.Occupancy.Flag(bb.Pos(3, 9))
-
-	// Set the black queens.
-	board.Black.Flag(bb.Pos(6, 0))
-	board.Occupancy.Flag(bb.Pos(6, 0))
-	board.Black.Flag(bb.Pos(9, 3))
-	board.Occupancy.Flag(bb.Pos(9, 3))
-	board.Black.Flag(bb.Pos(9, 6))
-	board.Occupancy.Flag(bb.Pos(9, 6))
-	board.Black.Flag(bb.Pos(6, 9))
-	board.Occupancy.Flag(bb.Pos(6, 9))
+	for _, pos := range board.White {
+		board.Occupancy.Flag(pos)
+	}
+	for _, pos := range board.Black {
+		board.Occupancy.Flag(pos)
+	}
 
 	return board
 }

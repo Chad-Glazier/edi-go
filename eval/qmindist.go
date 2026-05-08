@@ -1,6 +1,7 @@
 package eval
 
 import (
+	"github.com/Chad-Glazier/edi/bb"
 	"github.com/Chad-Glazier/edi/state"
 )
 
@@ -8,12 +9,15 @@ import (
 // square faster if their queens moved the way that chess queens do, then
 // calculates a score based on the sizes of the territories.
 func QMinDist(board *state.Board) float64 {
-
-	whiteTerritory := board.White
-	blackTerritory := board.Black
+	
+	whiteTerritory := bb.BitBoard{}
+	blackTerritory := bb.BitBoard{}
+	for i := range 4 {
+		whiteTerritory.Flag(board.White[i])
+		blackTerritory.Flag(board.Black[i])
+	}
 
 	visited := whiteTerritory.Or(blackTerritory)
-
 	whiteFrontier := state.QFrontier(board.Occupancy, whiteTerritory)
 	blackFrontier := state.QFrontier(board.Occupancy, blackTerritory)
 
