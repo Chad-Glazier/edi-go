@@ -36,16 +36,18 @@ type Board struct {
 }
 
 // Applies a move to the board, mutating its state.
-func (board *Board) Apply(move *Move) {
-	if board.Black.Flagged(move.From) {
-		board.Black.Unflag(move.From)
-		board.Black.Flag(move.To)
-		board.Player = WHITE
-	} else {
+func (board *Board) Apply(move Move) {
+
+	if board.Player == WHITE {
 		board.White.Unflag(move.From)
 		board.White.Flag(move.To)
 		board.Player = BLACK
+	} else {
+		board.Black.Unflag(move.From)
+		board.Black.Flag(move.To)
+		board.Player = WHITE
 	}
+
 	board.Occupancy.Unflag(move.From)
 	board.Occupancy.Flag(move.To)
 	board.Occupancy.Flag(move.Arrow)
