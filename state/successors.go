@@ -4,11 +4,13 @@ import "github.com/Chad-Glazier/edi/bb"
 
 // This constant dictates the initial capacity of the slice that holds child
 // states. In most Amazons board states, there are 1000 or fewer moves, but in
-// the early game it can be between 2000-3000. Reallocating the slice is pretty
-// expensive, so we want to avoid it when possible and keep the capacity high.
-// However, the successor allocations account for a very large portion of all
-// memory allocations and we may want to keep this number lower to help that.
-const SUCCESSOR_INITIAL_CAPACITY = 1000
+// the early game it can be between 2000-3000. In the early turns, reallocating
+// the successor slice can be expensive but over-allocating it in the mid- to
+// late-game seems to incur a much more significant cost. The ideal capacity
+// is clearly variable, so we should consider computing it by some heuristic
+// before the search. For now, though, we just set it to a number that seems
+// good after some trial-and-error with the benchmarks.
+const SUCCESSOR_INITIAL_CAPACITY = 200
 
 // Returns an unordered slice of all possible subsequent board states.
 func (board *Board) Successors() []Board {
