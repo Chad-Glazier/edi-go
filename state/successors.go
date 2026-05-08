@@ -8,7 +8,7 @@ import "github.com/Chad-Glazier/edi/bb"
 // expensive, so we want to avoid it when possible and keep the capacity high.
 // However, the successor allocations account for a very large portion of all
 // memory allocations and we may want to keep this number lower to help that.
-const SUCCESSOR_INITIAL_CAPACITY = 300
+const SUCCESSOR_INITIAL_CAPACITY = 1000
 
 // Returns an unordered slice of all possible subsequent board states.
 func (board *Board) Successors() []Board {
