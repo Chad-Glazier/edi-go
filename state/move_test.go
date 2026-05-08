@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestInferMove(t *testing.T) {
+func TestApplyMove(t *testing.T) {
 	board := RandomBoard(12)
 	children := board.Successors()
 

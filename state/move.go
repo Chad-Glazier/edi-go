@@ -81,21 +81,20 @@ func Apply(board Board, move Move) (*Board, error) {
 		return nil, err
 	}
 
-	if board.Player == WHITE {
-		for i, queen := range board.White {
-			if queen == move.From {
-				board.White[i] = move.To
-				break
-			}
+	for i := range 4 {
+		if board.White[i] == move.From {
+			board.White[i] = move.To
+			break
 		}
+		if board.Black[i] == move.From {
+			board.Black[i] = move.To
+			break
+		}
+	}
+
+	if board.Player == WHITE {
 		board.Player = BLACK
 	} else {
-		for i, queen := range board.Black {
-			if queen == move.From {
-				board.Black[i] = move.To
-				break
-			}
-		}
 		board.Player = WHITE
 	}
 
