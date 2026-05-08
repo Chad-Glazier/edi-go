@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/Chad-Glazier/edi/eval"
-	"github.com/Chad-Glazier/edi/search"
 	"github.com/Chad-Glazier/edi/state"
 )
 
@@ -15,28 +14,27 @@ type historicAlphaBetaState struct {
 }
 
 // Creates a new search function using the Minimax algorithm with alpha-beta
-// pruning and the history heuristic for move ordering.
-func HistoricAlphaBeta(heuristic eval.EvalFunc) search.SearchFunc {
-
-	ab := &historicAlphaBetaState{
-		heuristic: heuristic,
-		history:   &HistoryTable{},
-	}
-
-	return ab.search
-}
-
-func (s *historicAlphaBetaState) search(
-	board *state.Board, timeLimit time.Duration,
+// pruning and the history heuristic for move ordering. The history table will
+// be updated.
+func HistoricAlphaBeta(
+	board state.Board, 
+	timeLimit time.Duration, 
+	heuristic eval.EvalFunc,
+	history *HistoryTable,
 ) *state.Move {
 
 	maxDepth := 100 - board.Occupancy.Count()
 	complete := make(chan bool)
 	var bestMove *state.Move
 
+	s := &historicAlphaBetaState{
+		heuristic: heuristic,
+		history: history,
+	}
+
 	go func() {
 		for depth := 1; depth <= maxDepth; depth++ {
-			bestChildAtDepth := s.depthLimitedSearch(board, depth)
+			bestChildAtDepth := s.depthLimitedSearch(&board, depth)
 
 			if bestChildAtDepth == nil {
 				break
