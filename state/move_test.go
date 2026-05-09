@@ -8,7 +8,6 @@ func TestApplyMove(t *testing.T) {
 	board := RandomBoard(12)
 	children := board.Successors()
 
-
 	for _, child := range children {
 		// Ensure that applying the move to the initial board yields the child.
 		applied, err := Apply(board, child.Move)

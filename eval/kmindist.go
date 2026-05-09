@@ -12,14 +12,21 @@ func KMinDist(board *state.Board) float64 {
 
 	whiteTerritory := bb.BitBoard{}
 	blackTerritory := bb.BitBoard{}
+
+	whiteFrontier := bb.BitBoard{}
+	blackFrontier := bb.BitBoard{}
+
 	for i := range 4 {
 		whiteTerritory.Flag(board.White[i])
 		blackTerritory.Flag(board.Black[i])
+
+		whiteFrontier.AssignOr(
+			state.KNeighbors(board.Occupancy, board.White[i]))
+		blackFrontier.AssignOr(
+			state.KNeighbors(board.Occupancy, board.Black[i]))
 	}
 
 	visited := whiteTerritory.Or(blackTerritory)
-	whiteFrontier := state.KFrontier(board.Occupancy, whiteTerritory)
-	blackFrontier := state.KFrontier(board.Occupancy, blackTerritory)
 
 	for blackFrontier.NotEmpty() || whiteFrontier.NotEmpty() {
 

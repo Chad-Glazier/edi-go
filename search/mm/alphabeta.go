@@ -16,8 +16,8 @@ type alphaBetaState struct {
 // heuristic function is used for evaluating leaf nodes. No move-ordering is
 // done.
 func AlphaBeta(
-	board state.Board, 
-	timeLimit time.Duration, 
+	board state.Board,
+	timeLimit time.Duration,
 	heuristic eval.EvalFunc,
 ) *state.Move {
 

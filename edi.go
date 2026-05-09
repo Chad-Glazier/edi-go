@@ -24,8 +24,8 @@ func (edi *EDI) Consult(
 	}
 
 	return mm.HistoricAlphaBeta(
-		board, 
-		timeLimit, 
+		board,
+		timeLimit,
 		eval.KMinDist,
 		edi.history,
 	)

@@ -8,7 +8,7 @@ import (
 )
 
 // This VI picks moves completely at random.
-type Random struct {}
+type Random struct{}
 
 func (r *Random) Consult(
 	board state.Board, timeLimit time.Duration,

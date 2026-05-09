@@ -19,13 +19,13 @@ type Move struct {
 func (move Move) String() string {
 	return fmt.Sprintf(
 		"(%d, %d)->(%d, %d) X(%d, %d)",
-		move.From / 10, move.From % 10,
-		move.To / 10, move.To % 10,
-		move.Arrow / 10, move.Arrow % 10,
+		move.From/10, move.From%10,
+		move.To/10, move.To%10,
+		move.Arrow/10, move.Arrow%10,
 	)
 }
 
-// If the given move is legal on the current board, this returns nil. 
+// If the given move is legal on the current board, this returns nil.
 // Otherwise, it returns an error that explains why the move isn't allowed.
 func (move *Move) IsLegal(board *Board) error {
 
@@ -74,7 +74,7 @@ func (move *Move) IsLegal(board *Board) error {
 
 // Applies a move to the board, returning a new board with the updated state.
 // If the move is illegal, then an error is returned.
-func Apply(board Board, move Move) (*Board, error) {	
+func Apply(board Board, move Move) (*Board, error) {
 
 	err := move.IsLegal(&board)
 	if err != nil {

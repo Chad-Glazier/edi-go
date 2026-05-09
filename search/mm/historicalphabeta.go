@@ -17,8 +17,8 @@ type historicAlphaBetaState struct {
 // pruning and the history heuristic for move ordering. The history table will
 // be updated.
 func HistoricAlphaBeta(
-	board state.Board, 
-	timeLimit time.Duration, 
+	board state.Board,
+	timeLimit time.Duration,
 	heuristic eval.EvalFunc,
 	history *HistoryTable,
 ) *state.Move {
@@ -29,7 +29,7 @@ func HistoricAlphaBeta(
 
 	s := &historicAlphaBetaState{
 		heuristic: heuristic,
-		history: history,
+		history:   history,
 	}
 
 	go func() {
