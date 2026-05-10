@@ -22,3 +22,9 @@ func (arrow *Arrow) Consult(
 ) *state.Move {
 	return mm.AlphaBeta(board, timeLimit, eval.QMinDist)
 }
+
+func (arrow *Arrow) ConsultWithAnalytics(
+	board state.Board, timeLimit time.Duration,
+) (*state.Move, []mm.AlphaBetaAnalytics) {
+	return mm.AlphaBetaWithAnalytics(board, timeLimit, eval.QMinDist)
+}

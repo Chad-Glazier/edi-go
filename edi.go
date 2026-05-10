@@ -30,3 +30,19 @@ func (edi *EDI) Consult(
 		edi.history,
 	)
 }
+
+func (edi *EDI) ConsultWithAnalytics(
+	board state.Board, timeLimit time.Duration,
+) (*state.Move, []mm.HistoricAlphaBetaAnalytics) {
+
+	if edi.history == nil {
+		edi.history = &mm.HistoryTable{}
+	}
+
+	return mm.HistoricAlphaBetaWithAnalytics(
+		board,
+		timeLimit,
+		eval.KMinDist,
+		edi.history,
+	)
+}

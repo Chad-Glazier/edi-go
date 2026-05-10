@@ -8,45 +8,51 @@ import (
 	"github.com/Chad-Glazier/edi/state"
 )
 
-type AlphaBetaAnalytics struct {
+type HistoricAlphaBetaAnalytics struct {
 	Depth         int
 	LeafNodes     uint64
 	InteriorNodes uint64
 	Duration      time.Duration
-	Cutoffs       []uint64
+	// The number of cutoffs at each depth. E.g., to fet the number of cutoffs
+	// at depth 3, you would access Cutoffs[3].
+	Cutoffs []uint64
 }
 
-type alphaBetaWithAnalytics struct {
+type historicAlphaBetaWithAnalytics struct {
 	heuristic eval.EvalFunc
-	analytics AlphaBetaAnalytics
+	history   *HistoryTable
+	analytics HistoricAlphaBetaAnalytics
 }
 
-// Conducts a simple alpha-beta search and collects analytics as it goes. This
-// implementation involves more overhead than the regular AlphaBeta function so
-// you should only use this version if the analytics are important.
+// Conducts an alpha-beta search enhanced with the History Heuristic and
+// collects analytics as it goes. This implementation involves more overhead
+// than the regular HistoricAlphaBeta function so you should only use this
+// version if the analytics are important.
 //
 // The returned search analytics slice contains analytics for each depth-
 // limited search conducted during the iterative deepening process.
-func AlphaBetaWithAnalytics(
+func HistoricAlphaBetaWithAnalytics(
 	board state.Board,
 	timeLimit time.Duration,
 	heuristic eval.EvalFunc,
-) (*state.Move, []AlphaBetaAnalytics) {
+	history *HistoryTable,
+) (*state.Move, []HistoricAlphaBetaAnalytics) {
 
 	maxDepth := 100 - board.Occupancy.Count()
 	complete := make(chan bool)
 
-	s := &alphaBetaWithAnalytics{
+	s := &historicAlphaBetaWithAnalytics{
 		heuristic: heuristic,
+		history:   history,
 	}
 
 	var bestMove *state.Move
-	analytics := make([]AlphaBetaAnalytics, 1, maxDepth)
+	analytics := make([]HistoricAlphaBetaAnalytics, 1, maxDepth)
 
 	go func() {
 		for depth := 1; depth <= maxDepth; depth++ {
 
-			s.analytics = AlphaBetaAnalytics{
+			s.analytics = HistoricAlphaBetaAnalytics{
 				Depth:   depth,
 				Cutoffs: make([]uint64, depth+1),
 			}
@@ -75,7 +81,7 @@ func AlphaBetaWithAnalytics(
 
 // Conducts a depth-limited search from the specified state and returns the
 // immediate child which has the best minimax score.
-func (s *alphaBetaWithAnalytics) depthLimitedSearch(
+func (s *historicAlphaBetaWithAnalytics) depthLimitedSearch(
 	board *state.Board, depth int,
 ) *state.Board {
 
@@ -83,6 +89,8 @@ func (s *alphaBetaWithAnalytics) depthLimitedSearch(
 	if len(children) == 0 {
 		return nil
 	}
+
+	s.history.Sort(children)
 
 	var color float64
 	if board.Player == state.WHITE {
@@ -110,7 +118,7 @@ func (s *alphaBetaWithAnalytics) depthLimitedSearch(
 }
 
 // Conducts a recursive search to find the minimax score of a state.
-func (s *alphaBetaWithAnalytics) alphaBeta(
+func (s *historicAlphaBetaWithAnalytics) alphaBeta(
 	board *state.Board,
 	alpha, beta float64,
 	depth int, color float64,
@@ -130,6 +138,7 @@ func (s *alphaBetaWithAnalytics) alphaBeta(
 		return color * s.heuristic(board)
 	}
 
+	s.history.Sort(children)
 	score := math.Inf(-1)
 	for _, child := range children {
 		result := -s.alphaBeta(&child, -beta, -alpha, depth-1, -color)
@@ -137,6 +146,7 @@ func (s *alphaBetaWithAnalytics) alphaBeta(
 			score = result
 		}
 		if score >= beta {
+			s.history.IncreaseScore(&child, depth)
 			s.analytics.Cutoffs[depth]++
 			break
 		}
