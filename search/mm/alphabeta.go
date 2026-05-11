@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/Chad-Glazier/edi/eval"
-	"github.com/Chad-Glazier/edi/search"
 	"github.com/Chad-Glazier/edi/state"
 )
 
@@ -13,29 +12,27 @@ type alphaBetaState struct {
 	heuristic eval.EvalFunc
 }
 
-// Creates a new search function using the Minimax algorithm with alpha-beta
-// pruning and no move-ordering.
-func AlphaBeta(heuristic eval.EvalFunc) search.SearchFunc {
-
-	ab := &alphaBetaState{
-		heuristic: heuristic,
-	}
-
-	return ab.search
-}
-
-func (s *alphaBetaState) search(
-	board *state.Board, timeLimit time.Duration,
+// Conducts a simple minimax search with alpha-beta pruning. The given
+// heuristic function is used for evaluating leaf nodes. No move-ordering is
+// done.
+func AlphaBeta(
+	board state.Board,
+	timeLimit time.Duration,
+	heuristic eval.EvalFunc,
 ) *state.Move {
 
 	maxDepth := 100 - board.Occupancy.Count()
 	complete := make(chan bool)
 	var bestMove *state.Move
 
+	s := &alphaBetaState{
+		heuristic: heuristic,
+	}
+
 	go func() {
 		for depth := 1; depth <= maxDepth; depth++ {
-			bestChildAtDepth := s.depthLimitedSearch(board, depth)
 
+			bestChildAtDepth := s.depthLimitedSearch(&board, depth)
 			if bestChildAtDepth == nil {
 				break
 			}

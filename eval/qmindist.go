@@ -1,6 +1,7 @@
 package eval
 
 import (
+	"github.com/Chad-Glazier/edi/bb"
 	"github.com/Chad-Glazier/edi/state"
 )
 
@@ -9,13 +10,23 @@ import (
 // calculates a score based on the sizes of the territories.
 func QMinDist(board *state.Board) float64 {
 
-	whiteTerritory := board.White
-	blackTerritory := board.Black
+	whiteTerritory := bb.BitBoard{}
+	blackTerritory := bb.BitBoard{}
+
+	whiteFrontier := bb.BitBoard{}
+	blackFrontier := bb.BitBoard{}
+
+	for i := range 4 {
+		whiteTerritory.Flag(board.White[i])
+		blackTerritory.Flag(board.Black[i])
+
+		whiteFrontier.AssignOr(
+			state.QNeighbors(board.Occupancy, board.White[i]))
+		blackFrontier.AssignOr(
+			state.QNeighbors(board.Occupancy, board.Black[i]))
+	}
 
 	visited := whiteTerritory.Or(blackTerritory)
-
-	whiteFrontier := state.QFrontier(board.Occupancy, whiteTerritory)
-	blackFrontier := state.QFrontier(board.Occupancy, blackTerritory)
 
 	for blackFrontier.NotEmpty() || whiteFrontier.NotEmpty() {
 
