@@ -9,11 +9,13 @@ import (
 )
 
 type AlphaBetaAnalytics struct {
+	// The depth of the search
 	Depth         int
 	LeafNodes     uint64
 	InteriorNodes uint64
 	Duration      time.Duration
 	Cutoffs       []uint64
+	Turn          uint8
 }
 
 type alphaBetaWithAnalytics struct {
@@ -33,6 +35,7 @@ func AlphaBetaWithAnalytics(
 	heuristic eval.EvalFunc,
 ) (*state.Move, []AlphaBetaAnalytics) {
 
+	turn := uint8(board.Occupancy.Count() - 8)
 	maxDepth := 100 - board.Occupancy.Count()
 	complete := make(chan bool)
 
@@ -49,6 +52,7 @@ func AlphaBetaWithAnalytics(
 			s.analytics = AlphaBetaAnalytics{
 				Depth:   depth,
 				Cutoffs: make([]uint64, depth+1),
+				Turn:    turn,
 			}
 
 			start := time.Now()

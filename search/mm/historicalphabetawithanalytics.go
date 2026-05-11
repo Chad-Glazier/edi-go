@@ -16,6 +16,7 @@ type HistoricAlphaBetaAnalytics struct {
 	// The number of cutoffs at each depth. E.g., to fet the number of cutoffs
 	// at depth 3, you would access Cutoffs[3].
 	Cutoffs []uint64
+	Turn    uint8
 }
 
 type historicAlphaBetaWithAnalytics struct {
@@ -38,7 +39,8 @@ func HistoricAlphaBetaWithAnalytics(
 	history *HistoryTable,
 ) (*state.Move, []HistoricAlphaBetaAnalytics) {
 
-	maxDepth := 100 - board.Occupancy.Count()
+	turn := uint8(board.Occupancy.Count())
+	maxDepth := 92 - board.Occupancy.Count()
 	complete := make(chan bool)
 
 	s := &historicAlphaBetaWithAnalytics{
@@ -55,6 +57,7 @@ func HistoricAlphaBetaWithAnalytics(
 			s.analytics = HistoricAlphaBetaAnalytics{
 				Depth:   depth,
 				Cutoffs: make([]uint64, depth+1),
+				Turn:    turn,
 			}
 
 			start := time.Now()
