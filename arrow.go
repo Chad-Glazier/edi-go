@@ -17,6 +17,10 @@ import (
 // QMinDist to evaluate leaf nodes.
 type Arrow struct{}
 
+func NewArrow() VI {
+	return &Arrow{}
+}
+
 func (arrow *Arrow) Consult(
 	board state.Board, timeLimit time.Duration,
 ) *state.Move {

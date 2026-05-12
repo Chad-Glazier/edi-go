@@ -24,3 +24,32 @@ type Board struct {
 	// The player who can make the next move.
 	Player PlayerColor
 }
+
+type PositionStatus uint8
+
+const (
+	VACANT PositionStatus = iota
+	WHITE_QUEEN
+	BLACK_QUEEN
+	ARROW
+)
+
+// Returns VACANT, WHITE_QUEEN, BLACK_QUEEN, or ARROW, depending on what the
+// status of the position is on the board. This function is not optimal and is
+// only provided for convenience.
+func (b *Board) Status(pos bb.Position) PositionStatus {
+	if !b.Occupancy.Flagged(pos) {
+		return VACANT
+	}
+
+	for i := range 4 {
+		if b.White[i] == pos {
+			return WHITE_QUEEN
+		}
+		if b.Black[i] == pos {
+			return BLACK_QUEEN
+		}
+	}
+
+	return ARROW
+}

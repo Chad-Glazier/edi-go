@@ -10,6 +10,10 @@ import (
 // This VI picks moves completely at random.
 type Random struct{}
 
+func NewRandom() VI {
+	return &Random{}
+}
+
 func (r *Random) Consult(
 	board state.Board, timeLimit time.Duration,
 ) *state.Move {

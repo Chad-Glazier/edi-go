@@ -15,6 +15,10 @@ type EDI struct {
 	history *mm.HistoryTable
 }
 
+func NewEDI() VI {
+	return &EDI{}
+}
+
 func (edi *EDI) Consult(
 	board state.Board, timeLimit time.Duration,
 ) *state.Move {
