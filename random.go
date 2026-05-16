@@ -25,3 +25,7 @@ func (r *Random) Consult(
 	}
 	return &children[rand.IntN(len(children))].Move
 }
+
+func (r *Random) Id() string {
+	return "random"
+}

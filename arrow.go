@@ -32,3 +32,7 @@ func (arrow *Arrow) ConsultWithAnalytics(
 ) (*state.Move, []mm.AlphaBetaAnalytics) {
 	return mm.AlphaBetaWithAnalytics(board, timeLimit, eval.QMinDist)
 }
+
+func (arrow *Arrow) Id() string {
+	return "arrow"
+}

@@ -50,3 +50,7 @@ func (edi *EDI) ConsultWithAnalytics(
 		edi.history,
 	)
 }
+
+func (edi *EDI) Id() string {
+	return "edi"
+}

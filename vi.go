@@ -16,4 +16,5 @@ import (
 // would call such a program "AI," but that term has been diluted by dorks.
 type VI interface {
 	Consult(board state.Board, timeLimit time.Duration) *state.Move
+	Id() string
 }
